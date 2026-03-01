@@ -535,9 +535,90 @@
     color: var(--text);
     letter-spacing: 0.05em;
   }
+
+  /* SPEAKER NOTES */
+  .speaker-notes-toggle {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 100;
+    background: var(--blue);
+    border: none;
+    color: white;
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .speaker-notes-toggle:hover {
+    background: var(--blue2);
+    transform: scale(1.05);
+  }
+
+  .speaker-notes-panel {
+    position: fixed;
+    bottom: 2rem;
+    left: 12rem;
+    right: 2rem;
+    max-height: 200px;
+    background: var(--bg2);
+    border: 2px solid var(--blue);
+    border-radius: 8px;
+    padding: 1.5rem;
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.6;
+    overflow-y: auto;
+    z-index: 99;
+    display: none;
+    box-shadow: 0 10px 40px rgba(58, 139, 255, 0.2);
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .speaker-notes-panel.visible {
+    display: block;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .speaker-notes-label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blue2);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .speaker-notes-text {
+    color: var(--text);
+    font-family: 'Georgia', serif;
+    line-height: 1.7;
+  }
 </style>
 </head>
 <body>
+
+<button class="speaker-notes-toggle" onclick="toggleSpeakerNotes()">📋 Speaker Notes</button>
+<div class="speaker-notes-panel" id="speakerNotesPanel">
+  <span class="speaker-notes-label">Speaker Notes</span>
+  <div class="speaker-notes-text" id="speakerNotesText"></div>
+</div>
 
 <nav>
   <div class="nav-brand">NYC Violence &amp; Resource Gap</div>
@@ -713,6 +794,20 @@ const DATA = {
     "Queens":       [218, 201, 189, 212, 188, 281, 324, 248, 221, 205],
     "Staten Island": [34,  31,  29,  33,  29,  43,  51,  39,  35,  32]
   }
+};
+
+const SPEAKER_NOTES = {
+  slide1: "Over 37,000 shooting incidents. Across five boroughs. Documented by the NYPD. This is not a crime statistic — this is a policy failure. And today we're going to show you exactly where it lives.",
+  
+  slide2: "Brooklyn and the Bronx carry the heaviest load. Combined, they account for more than 70% of all shooting incidents in this city. These are not random communities. These are communities that have been asking for help — and getting less of it every year.",
+  
+  slide3: "Look at this pie. Brooklyn alone — over 40% of all NYC gun violence. The Bronx — nearly 30%. Manhattan, with the most city investment, the most parks, the most youth programming — sits at under 13%. That contrast is not accidental. It is the result of decades of unequal resource allocation.",
+  
+  slide4: "This is the Resource Gap Score. We calculated it by taking the shooting rate per 10,000 residents — and subtracting the youth resource rate per 10,000 residents. The Bronx scores plus 8.4. Brooklyn plus 6.1. These are not just high numbers. They are the sound of a city looking the other way.\n\n[pause]\n\nStaten Island scores 3.1 — with the lowest violence. Why? Because it has proportionally more resources and fewer people living in concentrated poverty. The data is not subtle.",
+  
+  slide5: "Every borough spiked in 2020 and 2021. We know why — pandemic, economic collapse, social services shut down. But look at what happened after. Brooklyn and the Bronx did not recover to pre-COVID levels the way Manhattan did. Because the resources that help communities absorb crisis — youth programs, safe spaces, community centers — were never restored at the same rate.\n\n[pause]\n\nThe trend line is not going down fast enough. Not without intervention.",
+  
+  slide6: "We are not here to describe a problem. We are here to give this Council a road map.\n\n① Fund fifty new youth program sites in the ten highest gap-score zip codes in Brooklyn and the Bronx.\n\n② Mandate an annual Resource Gap Score report — published, public, borough by borough — so this Council and every New Yorker can see exactly where the city is falling short.\n\n③ Redirect fifteen percent of gang unit overtime funding into community violence intervention programs that have a proven track record.\n\nThe data has told you where to go. The only question is whether the city will follow it."
 };
 
 // Chart.js global defaults
@@ -1103,6 +1198,58 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ============================================================
+// SPEAKER NOTES FUNCTIONALITY
+// ============================================================
+let notesVisible = false;
+
+function toggleSpeakerNotes() {
+  const panel = document.getElementById('speakerNotesPanel');
+  notesVisible = !notesVisible;
+  panel.classList.toggle('visible');
+  updateSpeakerNotes();
+}
+
+function updateSpeakerNotes() {
+  const notesPanel = document.getElementById('speakerNotesPanel');
+  const notesText = document.getElementById('speakerNotesText');
+  
+  if (!notesVisible) return;
+
+  // Detect which slide is currently in view
+  let currentSlide = 'slide1';
+  const slides = ['slide1', 'slide2', 'slide3', 'slide4', 'slide5', 'slide6'];
+  
+  slides.forEach((slideId, index) => {
+    const slide = document.getElementById(slideId);
+    if (slide) {
+      const rect = slide.getBoundingClientRect();
+      if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
+        currentSlide = slideId;
+      }
+    }
+  });
+
+  // Update notes text
+  const notes = SPEAKER_NOTES[currentSlide];
+  if (notes) {
+    notesText.innerHTML = notes.split('\n').map(line => {
+      if (line.includes('[pause]')) {
+        return `<em style="color: var(--blue2); font-weight: 600;">${line.trim()}</em>`;
+      }
+      return line;
+    }).join('<br>');
+  }
+}
+
+// Update speaker notes on scroll
+window.addEventListener('scroll', updateSpeakerNotes);
+
+// Update speaker notes on page load
+document.addEventListener('DOMContentLoaded', () => {
+  updateSpeakerNotes();
+});
 </script>
 </body>
 </html>

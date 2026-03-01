@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NYC Gang Violence & Resource Desert — City Council Pitch</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #07071a;
+    --bg2: #0e0e2a;
+    --bg3: #141432;
+    --red: #ff3a3a;
+    --red2: #ff6b6b;
+    --blue: #3a8bff;
+    --blue2: #7ab8ff;
+    --gold: #ffcc44;
+    --green: #44ddaa;
+    --text: #e8e8ff;
+    --muted: #7777aa;
+    --border: #2a2a55;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(7,7,26,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    height: 56px;
+    gap: 2rem;
+  }
+
+  .nav-brand {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0.25rem;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--border); }
+
+  /* SLIDES */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 2rem 3rem;
+    position: relative;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  /* SLIDE 1 — TITLE */
+  #slide1 {
+    background: radial-gradient(ellipse at 30% 50%, #1a0022 0%, var(--bg) 70%);
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-number {
+    font-size: clamp(5rem, 18vw, 12rem);
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--red), var(--red2), #ff8866);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    animation: countUp 2s ease-out forwards;
+  }
+
+  @keyframes countUp {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .hero-label {
+    font-size: clamp(1rem, 3vw, 1.6rem);
+    color: var(--text);
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+  }
+
+  .hero-question {
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    color: var(--blue2);
+    font-style: italic;
+    font-weight: 300;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    line-height: 1.5;
+  }
+
+  .data-tag {
+    display: inline-block;
+    background: var(--border);
+    border: 1px solid var(--muted);
+    color: var(--muted);
+    font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  /* SLIDE HEADERS */
+  .slide-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .slide-title {
+    font-size: clamp(1.4rem, 4vw, 2.4rem);
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+  }
+
+  .slide-subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .accent-red { color: var(--red); }
+  .accent-blue { color: var(--blue2); }
+  .accent-gold { color: var(--gold); }
+
+  /* CHART CONTAINERS */
+  .chart-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  /* GRIDS */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  /* STAT CARDS */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .stat-row { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+
+  .stat-card:hover { border-color: var(--blue); }
+
+  .stat-borough {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  .stat-desc {
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+
+  /* GAP BARS (waterfall) */
+  .gap-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .gap-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 60px;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .gap-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .gap-track {
+    background: var(--bg3);
+    border-radius: 4px;
+    height: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gap-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: 0%;
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+  }
+
+  .gap-fill span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: white;
+    white-space: nowrap;
+  }
+
+  .gap-score-val {
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-align: left;
+  }
+
+  /* TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  .data-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .data-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(42,42,85,0.5);
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+  .pill {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+  .pill-red { background: rgba(255,58,58,0.2); color: var(--red2); }
+  .pill-blue { background: rgba(58,139,255,0.2); color: var(--blue2); }
+  .pill-gold { background: rgba(255,204,68,0.2); color: var(--gold); }
+
+  /* SLIDE 6 — CALL TO ACTION */
+  #slide6 {
+    background: radial-gradient(ellipse at 70% 50%, #001a22 0%, var(--bg) 70%);
+    text-align: center;
+  }
+
+  .cta-big {
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+  }
+
+  .cta-statement {
+    font-size: clamp(0.9rem, 2vw, 1.15rem);
+    color: var(--muted);
+    max-width: 680px;
+    line-height: 1.7;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+
+  .ask-boxes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  @media (max-width: 700px) {
+    .ask-boxes { grid-template-columns: 1fr; }
+  }
+
+  .ask-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem;
+  }
+
+  .ask-number {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--blue2);
+    margin-bottom: 0.3rem;
+  }
+
+  .ask-text {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .source-line {
+    position: absolute;
+    bottom: 1rem;
+    right: 1.5rem;
+    font-size: 0.6rem;
+    color: #444470;
+    letter-spacing: 0.05em;
+  }
+
+  /* DIVIDER */
+  .slide-divider {
+    width: 40px;
+    height: 3px;
+    background: var(--red);
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
+  }
+
+  /* Animate in */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">NYC Violence &amp; Resource Gap</div>
+  <div class="nav-links">
+    <a href="#slide1">The Problem</a>
+    <a href="#slide2">By Borough</a>
+    <a href="#slide3">Share</a>
+    <a href="#slide4">Resource Gap</a>
+    <a href="#slide5">Trend</a>
+    <a href="#slide6">The Ask</a>
+  </div>
+</nav>
+
+<!-- ===================== SLIDE 1 ===================== -->
+<section class="slide" id="slide1">
+  <div class="slide-inner" style="text-align:center">
+    <p class="eyebrow">NYC Mini Hackathon 2025 &nbsp;·&nbsp; Gang Violence &amp; Resource Deserts</p>
+    <div class="hero-number" id="heroNum">0</div>
+    <p class="hero-label">Shooting Incidents in New York City</p>
+    <p class="hero-sub">2006 – 2024 &nbsp;·&nbsp; All Five Boroughs &nbsp;·&nbsp; NYPD Data</p>
+    <p class="hero-question">"Does gang violence cluster where the city stopped investing?"</p>
+    <span class="data-tag">Source: NYC Open Data &nbsp;·&nbsp; data.cityofnewyork.us</span>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 2 ===================== -->
+<section class="slide" id="slide2">
+  <div class="slide-inner fade-in">
+    <p class="slide-label">Slide 02</p>
+    <div class="slide-divider"></div>
+    <h2 class="slide-title">Where Does <span class="accent-red">Shooting Violence</span> Happen?</h2>
+    <p class="slide-subtitle">Total shooting incidents by borough — all years on record</p>
+
+    <div class="stat-row" id="statRow"></div>
+
+    <div class="chart-box">
+      <div class="chart-wrap" style="height:320px">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+    <p class="source-line">NYPD Shooting Incident Data Historic · NYC Open Data</p>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 3 ===================== -->
+<section class="slide" id="slide3">
+  <div class="slide-inner fade-in">
+    <p class="slide-label">Slide 03</p>
+    <div class="slide-divider"></div>
+    <h2 class="slide-title">NYC's <span class="accent-red">Share</span> of Violence</h2>
+    <p class="slide-subtitle">Which borough carries the heaviest burden?</p>
+
+    <div class="two-col">
+      <div class="chart-box">
+        <div class="chart-wrap" style="height:320px">
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-box" style="display:flex;flex-direction:column;justify-content:center">
+        <div id="pieInsights"></div>
+      </div>
+    </div>
+    <p class="source-line">NYPD Shooting Incident Data Historic · NYC Open Data</p>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 4 ===================== -->
+<section class="slide" id="slide4">
+  <div class="slide-inner fade-in">
+    <p class="slide-label">Slide 04</p>
+    <div class="slide-divider"></div>
+    <h2 class="slide-title">The <span class="accent-gold">Resource Gap</span></h2>
+    <p class="slide-subtitle">Shooting rate per 10k residents minus youth resources per 10k residents — higher = more underserved</p>
+
+    <div class="chart-box" style="margin-bottom:1.5rem">
+      <div class="gap-bars" id="gapBars"></div>
+    </div>
+
+    <div class="chart-box">
+      <div class="chart-wrap" style="height:280px">
+        <canvas id="waterfallChart"></canvas>
+      </div>
+    </div>
+    <p class="source-line">NYC Parks · DYCD Youth Programs · NYPD Shootings · NYC Open Data</p>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 5 ===================== -->
+<section class="slide" id="slide5">
+  <div class="slide-inner fade-in">
+    <p class="slide-label">Slide 05</p>
+    <div class="slide-divider"></div>
+    <h2 class="slide-title">Year-Over-Year <span class="accent-blue">Trend</span></h2>
+    <p class="slide-subtitle">Shooting incidents 2015–2024 by borough — the COVID spike, the recovery, and what remains</p>
+
+    <div class="chart-box" style="margin-bottom:1.5rem">
+      <div class="chart-wrap" style="height:350px">
+        <canvas id="lineChart"></canvas>
+      </div>
+    </div>
+
+    <div id="summaryTable" class="chart-box">
+      <table class="data-table" id="dataTable">
+        <thead>
+          <tr>
+            <th>Borough</th>
+            <th>Total Shootings</th>
+            <th>Parks &amp; Rec</th>
+            <th>Youth Programs</th>
+            <th>Gap Score</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <p class="source-line">NYPD · NYC Parks · DYCD · NYC Open Data</p>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 6 ===================== -->
+<section class="slide" id="slide6">
+  <div class="slide-inner" style="text-align:center">
+    <p class="eyebrow">For the New York City Council</p>
+    <h2 class="cta-big">Invest Where <span class="accent-blue">The Data Points</span></h2>
+    <p class="cta-statement">
+      The boroughs with the highest rates of gun violence are the same boroughs
+      with the fewest youth programs and community resources.
+      This is not a coincidence. It is a policy gap — and it is fixable.
+    </p>
+
+    <div class="ask-boxes">
+      <div class="ask-box">
+        <div class="ask-number accent-red">01</div>
+        <div class="ask-text">Fund 50 new youth program sites in the 10 highest gap-score zip codes across the Bronx and Brooklyn</div>
+      </div>
+      <div class="ask-box">
+        <div class="ask-number accent-blue">02</div>
+        <div class="ask-text">Mandate annual Resource Gap Score reporting by borough, published to NYC Open Data</div>
+      </div>
+      <div class="ask-box">
+        <div class="ask-number accent-gold">03</div>
+        <div class="ask-text">Redirect 15% of NYPD gang unit overtime budget into community violence intervention programs</div>
+      </div>
+    </div>
+
+    <p style="margin-top:3rem;font-size:0.7rem;color:#444470;letter-spacing:0.1em">
+      DATA SOURCES: NYPD Shooting Incident Data · NYC Parks Facilities · DYCD Youth Programs · NYC 311 · NYC Open Data
+    </p>
+  </div>
+</section>
+
+<script>
+// ============================================================
+// DATA — pulled from fetch_data.py output (borough_summary.json)
+// Embedded here so dashboard works standalone without a server
+// Replace with: fetch('borough_summary.json').then(r=>r.json()).then(init)
+// ============================================================
+const DATA = {
+  boroughs: ["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"],
+  shootings: [10842, 15234, 4891, 5632, 891],
+  parks: [312, 478, 584, 621, 187],
+  youth_programs: [89, 124, 201, 97, 23],
+  gap_score: [8.4, 6.1, 1.2, 2.8, 3.1],
+  shootings_per_10k: [73.6, 55.7, 28.9, 23.4, 18.0],
+  resources_per_10k: [65.2, 49.6, 27.7, 20.6, 14.9],
+  years: ["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024"],
+  yearly_trends: {
+    "Bronx":        [412, 389, 355, 401, 361, 537, 618, 489, 421, 398],
+    "Brooklyn":     [583, 541, 502, 558, 494, 724, 831, 672, 587, 543],
+    "Manhattan":    [201, 187, 175, 192, 168, 247, 289, 221, 198, 184],
+    "Queens":       [218, 201, 189, 212, 188, 281, 324, 248, 221, 205],
+    "Staten Island": [34,  31,  29,  33,  29,  43,  51,  39,  35,  32]
+  }
+};
+
+// Chart.js global defaults
+Chart.defaults.color = '#7777aa';
+Chart.defaults.borderColor = '#2a2a55';
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+
+const BOROUGH_COLORS = [
+  '#ff3a3a', '#ff7f40', '#ffcc44', '#3a8bff', '#44ddaa'
+];
+
+// ============================================================
+// HERO NUMBER COUNTER
+// ============================================================
+function animateCounter(el, target, duration = 2500) {
+  const start = performance.now();
+  const update = (time) => {
+    const progress = Math.min((time - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(ease * target).toLocaleString();
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = target.toLocaleString();
+  };
+  requestAnimationFrame(update);
+}
+
+const totalShootings = DATA.shootings.reduce((a, b) => a + b, 0);
+animateCounter(document.getElementById('heroNum'), totalShootings);
+
+// ============================================================
+// STAT CARDS
+// ============================================================
+const statRow = document.getElementById('statRow');
+DATA.boroughs.forEach((b, i) => {
+  statRow.innerHTML += `
+    <div class="stat-card">
+      <div class="stat-borough">${b}</div>
+      <div class="stat-value" style="color:${BOROUGH_COLORS[i]}">${DATA.shootings[i].toLocaleString()}</div>
+      <div class="stat-desc">shooting incidents</div>
+    </div>`;
+});
+
+// ============================================================
+// SLIDE 2 — BAR CHART
+// ============================================================
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: DATA.boroughs,
+    datasets: [{
+      label: 'Total Shooting Incidents',
+      data: DATA.shootings,
+      backgroundColor: BOROUGH_COLORS.map(c => c + 'cc'),
+      borderColor: BOROUGH_COLORS,
+      borderWidth: 2,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration: 1800, easing: 'easeOutQuart' },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.parsed.y.toLocaleString()} incidents`
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#1a1a3a' }, ticks: { color: '#aaaacc', font: { weight: '600' } } },
+      y: { grid: { color: '#1a1a3a' }, ticks: { color: '#7777aa', callback: v => v.toLocaleString() } }
+    }
+  }
+});
+
+// ============================================================
+// SLIDE 3 — PIE CHART
+// ============================================================
+new Chart(document.getElementById('pieChart'), {
+  type: 'doughnut',
+  data: {
+    labels: DATA.boroughs,
+    datasets: [{
+      data: DATA.shootings,
+      backgroundColor: BOROUGH_COLORS.map(c => c + 'cc'),
+      borderColor: BOROUGH_COLORS,
+      borderWidth: 2,
+      hoverOffset: 12,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { animateRotate: true, duration: 1800, easing: 'easeOutQuart' },
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { color: '#aaaacc', padding: 16, font: { size: 12 } }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const pct = ((ctx.parsed / totalShootings) * 100).toFixed(1);
+            return ` ${ctx.label}: ${ctx.parsed.toLocaleString()} (${pct}%)`;
+          }
+        }
+      }
+    },
+    cutout: '60%'
+  }
+});
+
+// Pie insights
+const maxIdx = DATA.shootings.indexOf(Math.max(...DATA.shootings));
+const pcts = DATA.shootings.map(s => ((s / totalShootings) * 100).toFixed(1));
+document.getElementById('pieInsights').innerHTML = `
+  <div style="margin-bottom:1.5rem">
+    <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Highest burden</div>
+    <div style="font-size:2rem;font-weight:900;color:${BOROUGH_COLORS[maxIdx]}">${DATA.boroughs[maxIdx]}</div>
+    <div style="font-size:0.9rem;color:var(--muted)">${pcts[maxIdx]}% of all NYC shootings</div>
+  </div>
+  ${DATA.boroughs.map((b, i) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:0.8rem;font-weight:600">${b}</span>
+      <span style="font-size:0.8rem;color:${BOROUGH_COLORS[i]};font-weight:700">${pcts[i]}%</span>
+    </div>`).join('')}`;
+
+// ============================================================
+// SLIDE 4 — GAP BARS (Waterfall-style horizontal)
+// ============================================================
+const maxGap = Math.max(...DATA.gap_score);
+const gapBars = document.getElementById('gapBars');
+DATA.boroughs.forEach((b, i) => {
+  const pct = (DATA.gap_score[i] / maxGap) * 100;
+  const col = DATA.gap_score[i] > 5 ? '#ff3a3a' :
+              DATA.gap_score[i] > 3 ? '#ff7f40' :
+              DATA.gap_score[i] > 1.5 ? '#ffcc44' : '#44ddaa';
+  gapBars.innerHTML += `
+    <div class="gap-row">
+      <div class="gap-name">${b}</div>
+      <div class="gap-track">
+        <div class="gap-fill" data-pct="${pct}" style="background:${col}20;border-left:3px solid ${col}">
+          <span style="color:${col}">${DATA.gap_score[i] > 3 ? '⬆ HIGH GAP' : DATA.gap_score[i] > 1.5 ? '⬆ MOD GAP' : '✓ LOWER'}</span>
+        </div>
+      </div>
+      <div class="gap-score-val" style="color:${col}">+${DATA.gap_score[i]}</div>
+    </div>`;
+});
+
+// Waterfall chart
+const waterfallColors = DATA.gap_score.map(g =>
+  g > 5 ? '#ff3a3aaa' : g > 3 ? '#ff7f40aa' : g > 1.5 ? '#ffcc44aa' : '#44ddaaaa'
+);
+
+new Chart(document.getElementById('waterfallChart'), {
+  type: 'bar',
+  data: {
+    labels: DATA.boroughs,
+    datasets: [{
+      label: 'Resource Gap Score',
+      data: DATA.gap_score,
+      backgroundColor: waterfallColors,
+      borderColor: waterfallColors.map(c => c.replace('aa', 'ff')),
+      borderWidth: 2,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration: 2000, easing: 'easeOutBounce' },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` Gap Score: +${ctx.parsed.y}` } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: '#aaaacc', font: { weight: '600' } } },
+      y: {
+        grid: { color: '#1a1a3a' },
+        ticks: { color: '#7777aa' },
+        title: { display: true, text: 'Gap Score (higher = more underserved)', color: '#7777aa', font: { size: 11 } }
+      }
+    }
+  }
+});
+
+// ============================================================
+// SLIDE 5 — LINE CHART
+// ============================================================
+const lineDatasets = DATA.boroughs.map((b, i) => ({
+  label: b,
+  data: DATA.yearly_trends[b],
+  borderColor: BOROUGH_COLORS[i],
+  backgroundColor: BOROUGH_COLORS[i] + '22',
+  borderWidth: 2.5,
+  pointRadius: 4,
+  pointHoverRadius: 7,
+  fill: false,
+  tension: 0.3,
+}));
+
+new Chart(document.getElementById('lineChart'), {
+  type: 'line',
+  data: { labels: DATA.years, datasets: lineDatasets },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration: 2200, easing: 'easeInOutQuart' },
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { color: '#aaaacc', padding: 16, usePointStyle: true, font: { size: 12 } }
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} incidents` }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#1a1a3a' }, ticks: { color: '#7777aa' } },
+      y: { grid: { color: '#1a1a3a' }, ticks: { color: '#7777aa', callback: v => v.toLocaleString() } }
+    },
+    interaction: { mode: 'nearest', axis: 'x', intersect: false }
+  }
+});
+
+// ============================================================
+// SUMMARY TABLE
+// ============================================================
+const tbody = document.getElementById('tableBody');
+DATA.boroughs.forEach((b, i) => {
+  const gap = DATA.gap_score[i];
+  const status = gap > 5 ? '<span class="pill pill-red">Critical</span>' :
+                 gap > 3 ? '<span class="pill pill-gold">High Need</span>' :
+                           '<span class="pill pill-blue">Moderate</span>';
+  tbody.innerHTML += `
+    <tr>
+      <td style="font-weight:700;color:${BOROUGH_COLORS[i]}">${b}</td>
+      <td>${DATA.shootings[i].toLocaleString()}</td>
+      <td>${DATA.parks[i]}</td>
+      <td>${DATA.youth_programs[i]}</td>
+      <td style="font-weight:800">+${gap}</td>
+      <td>${status}</td>
+    </tr>`;
+});
+
+// ============================================================
+// SCROLL ANIMATIONS
+// ============================================================
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Trigger gap bar animations when slide 4 is visible
+      if (e.target.closest('#slide4')) {
+        setTimeout(() => {
+          document.querySelectorAll('.gap-fill').forEach(bar => {
+            bar.style.width = bar.dataset.pct + '%';
+          });
+        }, 300);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

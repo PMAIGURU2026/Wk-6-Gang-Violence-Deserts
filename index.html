@@ -429,14 +429,27 @@
   /* NYC BOROUGH MAP */
   .nyc-map-container {
     width: 100%;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
+    animation: slideInMap 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  @keyframes slideInMap {
+    from {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   .nyc-map {
     width: 100%;
     height: auto;
-    filter: drop-shadow(0 0 20px rgba(58, 139, 255, 0.2));
+    filter: drop-shadow(0 0 30px rgba(58, 139, 255, 0.4));
+    min-height: 500px;
   }
 
   .borough-path {
@@ -469,46 +482,58 @@
   }
 
   .borough-label {
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: 1.3rem;
+    font-weight: 900;
     pointer-events: none;
     fill: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.05em;
   }
 
   .borough-stat {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     pointer-events: none;
     fill: var(--text);
-    font-weight: 600;
+    font-weight: 700;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   }
 
   .map-legend {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-top: 1.5rem;
+    gap: 1.5rem;
+    margin-top: 2rem;
     text-align: center;
   }
 
   .legend-item {
-    padding: 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
+    padding: 1rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg3);
+    transition: all 0.3s;
+  }
+
+  .legend-item:hover {
+    border-color: var(--blue2);
+    background: rgba(58, 139, 255, 0.1);
   }
 
   .legend-color {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
-    margin: 0 auto 0.3rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
+    margin: 0 auto 0.5rem;
     border-width: 2px;
     border-style: solid;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   .legend-label {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 700;
     color: var(--text);
+    letter-spacing: 0.05em;
   }
 </style>
 </head>
@@ -544,11 +569,11 @@
     <p class="slide-label">Slide 02</p>
     <div class="slide-divider"></div>
     <h2 class="slide-title">Where Does <span class="accent-red">Shooting Violence</span> Happen?</h2>
-    <p class="slide-subtitle">Total shooting incidents by borough — all years on record</p>
+    <p class="slide-subtitle">Total shooting incidents by borough — color intensity shows concentration | Darker red = more incidents</p>
 
     <div class="stat-row" id="statRow"></div>
 
-    <div class="chart-box">
+    <div class="chart-box" style="padding: 2.5rem; margin-bottom: 1.5rem;">
       <div class="nyc-map-container">
         <svg id="nycMapSlide2" class="nyc-map" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"></svg>
       </div>

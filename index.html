@@ -425,6 +425,91 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* NYC BOROUGH MAP */
+  .nyc-map-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .nyc-map {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(58, 139, 255, 0.2));
+  }
+
+  .borough-path {
+    fill: var(--bg3);
+    stroke: var(--border);
+    stroke-width: 2;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+  }
+
+  .borough-path:hover {
+    stroke: var(--blue2);
+    stroke-width: 3;
+    filter: brightness(1.3);
+  }
+
+  .borough-path.critical {
+    fill: #ff3a3a66;
+    stroke: #ff3a3a;
+  }
+
+  .borough-path.high-need {
+    fill: #ff7f4066;
+    stroke: #ff7f40;
+  }
+
+  .borough-path.moderate {
+    fill: #ffcc4466;
+    stroke: #ffcc44;
+  }
+
+  .borough-label {
+    font-size: 1rem;
+    font-weight: 700;
+    pointer-events: none;
+    fill: white;
+  }
+
+  .borough-stat {
+    font-size: 0.75rem;
+    pointer-events: none;
+    fill: var(--text);
+    font-weight: 600;
+  }
+
+  .map-legend {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .legend-item {
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
+  .legend-color {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    margin: 0 auto 0.3rem;
+    border-width: 2px;
+    border-style: solid;
+  }
+
+  .legend-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text);
+  }
 </style>
 </head>
 <body>
@@ -464,9 +549,10 @@
     <div class="stat-row" id="statRow"></div>
 
     <div class="chart-box">
-      <div class="chart-wrap" style="height:320px">
-        <canvas id="barChart"></canvas>
+      <div class="nyc-map-container">
+        <svg id="nycMapSlide2" class="nyc-map" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
+      <div class="map-legend" id="mapLegendSlide2"></div>
     </div>
     <p class="source-line">NYPD Shooting Incident Data Historic · NYC Open Data</p>
   </div>
@@ -632,6 +718,162 @@ const totalShootings = DATA.shootings.reduce((a, b) => a + b, 0);
 animateCounter(document.getElementById('heroNum'), totalShootings);
 
 // ============================================================
+// NYC BOROUGH MAP VISUALIZATION
+// ============================================================
+function renderNYCMap(svgId, legendId) {
+  const svgNs = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById(svgId);
+  
+  if (!svg) return;
+
+  // Simplified NYC borough shapes (approximate polygons)
+  const boroughs = [
+    {
+      name: 'Bronx',
+      path: 'M 550 80 L 650 100 L 680 150 L 650 200 L 550 180 Z',
+      cx: 600,
+      cy: 140,
+      index: 0
+    },
+    {
+      name: 'Manhattan',
+      path: 'M 520 200 L 560 220 L 560 380 L 520 360 Z',
+      cx: 540,
+      cy: 290,
+      index: 2
+    },
+    {
+      name: 'Brooklyn',
+      path: 'M 560 380 L 650 360 L 700 480 L 620 500 Z',
+      cx: 630,
+      cy: 430,
+      index: 1
+    },
+    {
+      name: 'Queens',
+      path: 'M 680 150 L 780 140 L 800 300 L 650 360 L 650 200 Z',
+      cx: 730,
+      cy: 220,
+      index: 3
+    },
+    {
+      name: 'Staten Island',
+      path: 'M 420 450 L 520 460 L 520 550 L 420 540 Z',
+      cx: 470,
+      cy: 500,
+      index: 4
+    }
+  ];
+
+  // Draw borough paths with animation
+  boroughs.forEach((b, idx) => {
+    const path = document.createElementNS(svgNs, 'path');
+    const shootings = DATA.shootings[b.index];
+    const maxShootings = Math.max(...DATA.shootings);
+    const intensity = shootings / maxShootings;
+    
+    // Color based on shooting intensity
+    let fillColor, strokeColor;
+    if (intensity > 0.6) {
+      fillColor = '#ff3a3a66';
+      strokeColor = '#ff3a3a';
+    } else if (intensity > 0.4) {
+      fillColor = '#ff7f4066';
+      strokeColor = '#ff7f40';
+    } else if (intensity > 0.2) {
+      fillColor = '#ffcc4466';
+      strokeColor = '#ffcc44';
+    } else {
+      fillColor = '#3a8bff66';
+      strokeColor = '#3a8bff';
+    }
+    
+    path.setAttribute('d', b.path);
+    path.setAttribute('fill', fillColor);
+    path.setAttribute('stroke', strokeColor);
+    path.setAttribute('class', 'borough-path');
+    path.setAttribute('data-borough', b.name);
+    path.setAttribute('data-shootings', shootings);
+    
+    path.style.animation = `fadeInPath 0.8s ease-out ${idx * 0.15}s forwards`;
+    path.style.opacity = '0';
+    
+    path.addEventListener('mouseenter', function() {
+      document.querySelectorAll('#' + svgId + ' .borough-path').forEach(p => p.style.opacity = '0.5');
+      this.style.opacity = '1';
+    });
+    path.addEventListener('mouseleave', function() {
+      document.querySelectorAll('#' + svgId + ' .borough-path').forEach(p => p.style.opacity = '1');
+    });
+    
+    svg.appendChild(path);
+  });
+
+  // Add labels
+  boroughs.forEach((b, idx) => {
+    const text = document.createElementNS(svgNs, 'text');
+    text.setAttribute('x', b.cx);
+    text.setAttribute('y', b.cy - 5);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('dominant-baseline', 'middle');
+    text.setAttribute('class', 'borough-label');
+    text.setAttribute('style', `fill: ${BOROUGH_COLORS[b.index]}; animation: fadeInPath 0.8s ease-out ${idx * 0.15 + 0.2}s forwards; opacity: 0;`);
+    text.textContent = b.name;
+    
+    svg.appendChild(text);
+
+    // Add shooting count
+    const stat = document.createElementNS(svgNs, 'text');
+    stat.setAttribute('x', b.cx);
+    stat.setAttribute('y', b.cy + 15);
+    stat.setAttribute('text-anchor', 'middle');
+    stat.setAttribute('class', 'borough-stat');
+    stat.setAttribute('style', `animation: fadeInPath 0.8s ease-out ${idx * 0.15 + 0.3}s forwards; opacity: 0;`);
+    stat.textContent = `${DATA.shootings[b.index].toLocaleString()} incidents`;
+    
+    svg.appendChild(stat);
+  });
+
+  // Add animation keyframes if not already present
+  if (!document.getElementById('mapAnimations')) {
+    const style = document.createElement('style');
+    style.id = 'mapAnimations';
+    style.textContent = `
+      @keyframes fadeInPath {
+        from { opacity: 0; filter: drop-shadow(0 0 0px rgba(58, 139, 255, 0)); }
+        to { opacity: 1; filter: drop-shadow(0 0 10px rgba(58, 139, 255, 0.3)); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Render legend
+  const legend = document.getElementById(legendId);
+  if (legend) {
+    const statuses = [
+      { label: 'Highest Incidents', threshold: 0.6, color: '#ff3a3a' },
+      { label: 'High', threshold: 0.4, color: '#ff7f40' },
+      { label: 'Moderate to Low', threshold: 0.2, color: '#ffcc44' }
+    ];
+
+    statuses.forEach(s => {
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      item.innerHTML = `
+        <div class="legend-color" style="background: ${s.color}66; border-color: ${s.color};"></div>
+        <div class="legend-label">${s.label}</div>
+      `;
+      legend.appendChild(item);
+    });
+  }
+}
+
+// Render map when page loads
+document.addEventListener('DOMContentLoaded', () => {
+  renderNYCMap('nycMapSlide2', 'mapLegendSlide2');
+});
+
+// ============================================================
 // STAT CARDS
 // ============================================================
 const statRow = document.getElementById('statRow');
@@ -642,41 +884,6 @@ DATA.boroughs.forEach((b, i) => {
       <div class="stat-value" style="color:${BOROUGH_COLORS[i]}">${DATA.shootings[i].toLocaleString()}</div>
       <div class="stat-desc">shooting incidents</div>
     </div>`;
-});
-
-// ============================================================
-// SLIDE 2 — BAR CHART
-// ============================================================
-new Chart(document.getElementById('barChart'), {
-  type: 'bar',
-  data: {
-    labels: DATA.boroughs,
-    datasets: [{
-      label: 'Total Shooting Incidents',
-      data: DATA.shootings,
-      backgroundColor: BOROUGH_COLORS.map(c => c + 'cc'),
-      borderColor: BOROUGH_COLORS,
-      borderWidth: 2,
-      borderRadius: 6,
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: { duration: 1800, easing: 'easeOutQuart' },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => ` ${ctx.parsed.y.toLocaleString()} incidents`
-        }
-      }
-    },
-    scales: {
-      x: { grid: { color: '#1a1a3a' }, ticks: { color: '#aaaacc', font: { weight: '600' } } },
-      y: { grid: { color: '#1a1a3a' }, ticks: { color: '#7777aa', callback: v => v.toLocaleString() } }
-    }
-  }
 });
 
 // ============================================================

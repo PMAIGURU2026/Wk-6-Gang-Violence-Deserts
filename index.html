@@ -23,14 +23,43 @@
     --border: #2a2a55;
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow: hidden; }
 
   body {
     background: var(--bg);
     color: var(--text);
     font-family: 'Segoe UI', system-ui, sans-serif;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow: hidden;
+  }
+
+  /* SLIDE CONTAINER */
+  .slides-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .slide-viewport {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    pointer-events: none;
+  }
+
+  .slide-viewport.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .slide-viewport {
+    overflow-y: auto;
+    scroll-behavior: smooth;
   }
 
   /* NAV */
@@ -74,8 +103,55 @@
     white-space: nowrap;
     transition: all 0.2s;
     letter-spacing: 0.05em;
+    cursor: pointer;
   }
   .nav-links a:hover { color: var(--text); background: var(--border); }
+  .nav-links a.active { color: var(--red); font-weight: 700; }
+
+  /* SLIDE NAV CONTROLS */
+  .slide-controls {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .slide-counter {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  .slide-btn {
+    background: var(--border);
+    border: 1px solid var(--muted);
+    color: var(--text);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+  }
+
+  .slide-btn:hover {
+    background: var(--blue);
+    border-color: var(--blue2);
+    color: white;
+  }
+
+  .slide-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
 
   /* SLIDES */
   .slide {
@@ -425,162 +501,295 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* NYC BOROUGH MAP */
+  .nyc-map-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .nyc-map {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(58, 139, 255, 0.2));
+  }
+
+  .borough-path {
+    fill: var(--bg3);
+    stroke: var(--border);
+    stroke-width: 2;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+  }
+
+  .borough-path:hover {
+    stroke: var(--blue2);
+    stroke-width: 3;
+    filter: brightness(1.3);
+  }
+
+  .borough-path.critical {
+    fill: #ff3a3a66;
+    stroke: #ff3a3a;
+  }
+
+  .borough-path.high-need {
+    fill: #ff7f4066;
+    stroke: #ff7f40;
+  }
+
+  .borough-path.moderate {
+    fill: #ffcc4466;
+    stroke: #ffcc44;
+  }
+
+  .borough-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    pointer-events: none;
+  }
+
+  .borough-stat {
+    font-size: 0.65rem;
+    pointer-events: none;
+    fill: var(--text);
+  }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-brand">NYC Violence &amp; Resource Gap</div>
-  <div class="nav-links">
-    <a href="#slide1">The Problem</a>
-    <a href="#slide2">By Borough</a>
-    <a href="#slide3">Share</a>
-    <a href="#slide4">Resource Gap</a>
-    <a href="#slide5">Trend</a>
-    <a href="#slide6">The Ask</a>
+  <div class="nav-links" id="navLinks">
+    <a class="nav-slide-link active" data-slide="0">The Problem</a>
+    <a class="nav-slide-link" data-slide="1">By Borough</a>
+    <a class="nav-slide-link" data-slide="2">Share</a>
+    <a class="nav-slide-link" data-slide="3">Resource Gap</a>
+    <a class="nav-slide-link" data-slide="4">Trend</a>
+    <a class="nav-slide-link" data-slide="5">The Ask</a>
   </div>
 </nav>
 
+<div class="slides-container" id="slidesContainer">
+
 <!-- ===================== SLIDE 1 ===================== -->
-<section class="slide" id="slide1">
-  <div class="slide-inner" style="text-align:center">
-    <p class="eyebrow">NYC Mini Hackathon 2025 &nbsp;·&nbsp; Gang Violence &amp; Resource Deserts</p>
-    <div class="hero-number" id="heroNum">0</div>
-    <p class="hero-label">Shooting Incidents in New York City</p>
-    <p class="hero-sub">2006 – 2024 &nbsp;·&nbsp; All Five Boroughs &nbsp;·&nbsp; NYPD Data</p>
-    <p class="hero-question">"Does gang violence cluster where the city stopped investing?"</p>
-    <span class="data-tag">Source: NYC Open Data &nbsp;·&nbsp; data.cityofnewyork.us</span>
-  </div>
-</section>
+<div class="slide-viewport active" id="slide0">
+  <section class="slide" id="slide1">
+    <div class="slide-inner" style="text-align:center">
+      <p class="eyebrow">NYC Mini Hackathon 2025 &nbsp;·&nbsp; Gang Violence &amp; Resource Deserts</p>
+      <div class="hero-number" id="heroNum">0</div>
+      <p class="hero-label">Shooting Incidents in New York City</p>
+      <p class="hero-sub">2006 – 2024 &nbsp;·&nbsp; All Five Boroughs &nbsp;·&nbsp; NYPD Data</p>
+      <p class="hero-question">"Does gang violence cluster where the city stopped investing?"</p>
+      <span class="data-tag">Source: NYC Open Data &nbsp;·&nbsp; data.cityofnewyork.us</span>
+    </div>
+  </section>
+</div>
 
 <!-- ===================== SLIDE 2 ===================== -->
-<section class="slide" id="slide2">
-  <div class="slide-inner fade-in">
-    <p class="slide-label">Slide 02</p>
-    <div class="slide-divider"></div>
-    <h2 class="slide-title">Where Does <span class="accent-red">Shooting Violence</span> Happen?</h2>
-    <p class="slide-subtitle">Total shooting incidents by borough — all years on record</p>
+<div class="slide-viewport" id="slide1">
+  <section class="slide" id="slide2">
+    <div class="slide-inner fade-in">
+      <p class="slide-label">Slide 02</p>
+      <div class="slide-divider"></div>
+      <h2 class="slide-title">Where Does <span class="accent-red">Shooting Violence</span> Happen?</h2>
+      <p class="slide-subtitle">Total shooting incidents by borough — all years on record</p>
 
-    <div class="stat-row" id="statRow"></div>
+      <div class="stat-row" id="statRow"></div>
 
-    <div class="chart-box">
-      <div class="chart-wrap" style="height:320px">
-        <canvas id="barChart"></canvas>
-      </div>
-    </div>
-    <p class="source-line">NYPD Shooting Incident Data Historic · NYC Open Data</p>
-  </div>
-</section>
-
-<!-- ===================== SLIDE 3 ===================== -->
-<section class="slide" id="slide3">
-  <div class="slide-inner fade-in">
-    <p class="slide-label">Slide 03</p>
-    <div class="slide-divider"></div>
-    <h2 class="slide-title">NYC's <span class="accent-red">Share</span> of Violence</h2>
-    <p class="slide-subtitle">Which borough carries the heaviest burden?</p>
-
-    <div class="two-col">
       <div class="chart-box">
         <div class="chart-wrap" style="height:320px">
-          <canvas id="pieChart"></canvas>
+          <canvas id="barChart"></canvas>
         </div>
       </div>
-      <div class="chart-box" style="display:flex;flex-direction:column;justify-content:center">
-        <div id="pieInsights"></div>
+      <p class="source-line">NYPD Shooting Incident Data Historic · NYC Open Data</p>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== SLIDE 3 ===================== -->
+<div class="slide-viewport" id="slide2">
+  <section class="slide" id="slide3">
+    <div class="slide-inner fade-in">
+      <p class="slide-label">Slide 03</p>
+      <div class="slide-divider"></div>
+      <h2 class="slide-title">NYC's <span class="accent-red">Share</span> of Violence</h2>
+      <p class="slide-subtitle">Which borough carries the heaviest burden?</p>
+
+      <div class="two-col">
+        <div class="chart-box">
+          <div class="chart-wrap" style="height:320px">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-box" style="display:flex;flex-direction:column;justify-content:center">
+          <div id="pieInsights"></div>
+        </div>
       </div>
+      <p class="source-line">NYPD Shooting Incident Data Historic · NYC Open Data</p>
     </div>
-    <p class="source-line">NYPD Shooting Incident Data Historic · NYC Open Data</p>
-  </div>
-</section>
+  </section>
+</div>
 
-<!-- ===================== SLIDE 4 ===================== -->
-<section class="slide" id="slide4">
-  <div class="slide-inner fade-in">
-    <p class="slide-label">Slide 04</p>
-    <div class="slide-divider"></div>
-    <h2 class="slide-title">The <span class="accent-gold">Resource Gap</span></h2>
-    <p class="slide-subtitle">Shooting rate per 10k residents minus youth resources per 10k residents — higher = more underserved</p>
+<!-- ===================== SLIDE 4 — RESOURCE GAP MAP ===================== -->
+<div class="slide-viewport" id="slide3">
+  <section class="slide" id="slide4">
+    <div class="slide-inner fade-in">
+      <p class="slide-label">Slide 04</p>
+      <div class="slide-divider"></div>
+      <h2 class="slide-title">The <span class="accent-gold">Resource Gap</span></h2>
+      <p class="slide-subtitle">Where NYC's investment in youth resources doesn't match the violence crisis</p>
 
-    <div class="chart-box" style="margin-bottom:1.5rem">
-      <div class="gap-bars" id="gapBars"></div>
-    </div>
-
-    <div class="chart-box">
-      <div class="chart-wrap" style="height:280px">
-        <canvas id="waterfallChart"></canvas>
+      <div class="chart-box" style="margin-bottom:2rem">
+        <div class="nyc-map-container">
+          <svg id="nycMap" class="nyc-map" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
       </div>
+
+      <div class="chart-box">
+        <div id="mapLegend" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center;"></div>
+      </div>
+      <p class="source-line">NYC Parks · DYCD Youth Programs · NYPD Shootings · NYC Open Data</p>
     </div>
-    <p class="source-line">NYC Parks · DYCD Youth Programs · NYPD Shootings · NYC Open Data</p>
-  </div>
-</section>
+  </section>
+</div>
 
 <!-- ===================== SLIDE 5 ===================== -->
-<section class="slide" id="slide5">
-  <div class="slide-inner fade-in">
-    <p class="slide-label">Slide 05</p>
-    <div class="slide-divider"></div>
-    <h2 class="slide-title">Year-Over-Year <span class="accent-blue">Trend</span></h2>
-    <p class="slide-subtitle">Shooting incidents 2015–2024 by borough — the COVID spike, the recovery, and what remains</p>
+<div class="slide-viewport" id="slide4">
+  <section class="slide" id="slide5">
+    <div class="slide-inner fade-in">
+      <p class="slide-label">Slide 05</p>
+      <div class="slide-divider"></div>
+      <h2 class="slide-title">Year-Over-Year <span class="accent-blue">Trend</span></h2>
+      <p class="slide-subtitle">Shooting incidents 2015–2024 by borough — the COVID spike, the recovery, and what remains</p>
 
-    <div class="chart-box" style="margin-bottom:1.5rem">
-      <div class="chart-wrap" style="height:350px">
-        <canvas id="lineChart"></canvas>
+      <div class="chart-box" style="margin-bottom:1.5rem">
+        <div class="chart-wrap" style="height:350px">
+          <canvas id="lineChart"></canvas>
+        </div>
       </div>
-    </div>
 
-    <div id="summaryTable" class="chart-box">
-      <table class="data-table" id="dataTable">
-        <thead>
-          <tr>
-            <th>Borough</th>
-            <th>Total Shootings</th>
-            <th>Parks &amp; Rec</th>
-            <th>Youth Programs</th>
-            <th>Gap Score</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
+      <div id="summaryTable" class="chart-box">
+        <table class="data-table" id="dataTable">
+          <thead>
+            <tr>
+              <th>Borough</th>
+              <th>Total Shootings</th>
+              <th>Parks &amp; Rec</th>
+              <th>Youth Programs</th>
+              <th>Gap Score</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <p class="source-line">NYPD · NYC Parks · DYCD · NYC Open Data</p>
     </div>
-    <p class="source-line">NYPD · NYC Parks · DYCD · NYC Open Data</p>
-  </div>
-</section>
+  </section>
+</div>
 
 <!-- ===================== SLIDE 6 ===================== -->
-<section class="slide" id="slide6">
-  <div class="slide-inner" style="text-align:center">
-    <p class="eyebrow">For the New York City Council</p>
-    <h2 class="cta-big">Invest Where <span class="accent-blue">The Data Points</span></h2>
-    <p class="cta-statement">
-      The boroughs with the highest rates of gun violence are the same boroughs
-      with the fewest youth programs and community resources.
-      This is not a coincidence. It is a policy gap — and it is fixable.
-    </p>
+<div class="slide-viewport" id="slide5">
+  <section class="slide" id="slide6">
+    <div class="slide-inner" style="text-align:center">
+      <p class="eyebrow">For the New York City Council</p>
+      <h2 class="cta-big">Invest Where <span class="accent-blue">The Data Points</span></h2>
+      <p class="cta-statement">
+        The boroughs with the highest rates of gun violence are the same boroughs
+        with the fewest youth programs and community resources.
+        This is not a coincidence. It is a policy gap — and it is fixable.
+      </p>
 
-    <div class="ask-boxes">
-      <div class="ask-box">
-        <div class="ask-number accent-red">01</div>
-        <div class="ask-text">Fund 50 new youth program sites in the 10 highest gap-score zip codes across the Bronx and Brooklyn</div>
+      <div class="ask-boxes">
+        <div class="ask-box">
+          <div class="ask-number accent-red">01</div>
+          <div class="ask-text">Fund 50 new youth program sites in the 10 highest gap-score zip codes across the Bronx and Brooklyn</div>
+        </div>
+        <div class="ask-box">
+          <div class="ask-number accent-blue">02</div>
+          <div class="ask-text">Mandate annual Resource Gap Score reporting by borough, published to NYC Open Data</div>
+        </div>
+        <div class="ask-box">
+          <div class="ask-number accent-gold">03</div>
+          <div class="ask-text">Redirect 15% of NYPD gang unit overtime budget into community violence intervention programs</div>
+        </div>
       </div>
-      <div class="ask-box">
-        <div class="ask-number accent-blue">02</div>
-        <div class="ask-text">Mandate annual Resource Gap Score reporting by borough, published to NYC Open Data</div>
-      </div>
-      <div class="ask-box">
-        <div class="ask-number accent-gold">03</div>
-        <div class="ask-text">Redirect 15% of NYPD gang unit overtime budget into community violence intervention programs</div>
-      </div>
+
+      <p style="margin-top:3rem;font-size:0.7rem;color:#444470;letter-spacing:0.1em">
+        DATA SOURCES: NYPD Shooting Incident Data · NYC Parks Facilities · DYCD Youth Programs · NYC 311 · NYC Open Data
+      </p>
     </div>
+  </section>
+</div>
 
-    <p style="margin-top:3rem;font-size:0.7rem;color:#444470;letter-spacing:0.1em">
-      DATA SOURCES: NYPD Shooting Incident Data · NYC Parks Facilities · DYCD Youth Programs · NYC 311 · NYC Open Data
-    </p>
-  </div>
-</section>
+</div>
+
+<div class="slide-controls">
+  <button class="slide-btn" id="prevBtn" onclick="prevSlide()">←</button>
+  <span class="slide-counter"><span id="currentSlide">1</span> / 6</span>
+  <button class="slide-btn" id="nextBtn" onclick="nextSlide()">→</button>
+</div>
 
 <script>
+// ============================================================
+// SLIDE NAVIGATION
+// ============================================================
+let currentSlide = 0;
+const totalSlides = 6;
+
+function goToSlide(n) {
+  const container = document.getElementById('slidesContainer');
+  const viewports = container.querySelectorAll('.slide-viewport');
+  
+  // Clamp slide number
+  n = Math.max(0, Math.min(n, totalSlides - 1));
+  currentSlide = n;
+
+  // Update viewports
+  viewports.forEach((vp, i) => {
+    vp.classList.toggle('active', i === n);
+  });
+
+  // Update nav links
+  document.querySelectorAll('.nav-slide-link').forEach((link, i) => {
+    link.classList.toggle('active', i === n);
+  });
+
+  // Update counter
+  document.getElementById('currentSlide').textContent = n + 1;
+
+  // Update button states
+  document.getElementById('prevBtn').disabled = n === 0;
+  document.getElementById('nextBtn').disabled = n === totalSlides - 1;
+}
+
+function nextSlide() {
+  goToSlide(currentSlide + 1);
+}
+
+function prevSlide() {
+  goToSlide(currentSlide - 1);
+}
+
+// Nav link clicks
+document.querySelectorAll('.nav-slide-link').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    goToSlide(parseInt(link.dataset.slide));
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') nextSlide();
+  if (e.key === 'ArrowLeft') prevSlide();
+});
+
+// Initialize buttons
+goToSlide(0);
+
 // ============================================================
 // DATA — pulled from fetch_data.py output (borough_summary.json)
 // Embedded here so dashboard works standalone without a server
@@ -612,6 +821,152 @@ Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
 const BOROUGH_COLORS = [
   '#ff3a3a', '#ff7f40', '#ffcc44', '#3a8bff', '#44ddaa'
 ];
+
+// ============================================================
+// NYC BOROUGH MAP VISUALIZATION
+// ============================================================
+function renderNYCMap() {
+  const svgNs = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById('nycMap');
+  
+  // Simplified NYC borough shapes (approximate polygons)
+  const boroughs = [
+    {
+      name: 'Bronx',
+      path: 'M 550 80 L 650 100 L 680 150 L 650 200 L 550 180 Z',
+      cx: 600,
+      cy: 140,
+      index: 0
+    },
+    {
+      name: 'Manhattan',
+      path: 'M 520 200 L 560 220 L 560 380 L 520 360 Z',
+      cx: 540,
+      cy: 290,
+      index: 2
+    },
+    {
+      name: 'Brooklyn',
+      path: 'M 560 380 L 650 360 L 700 480 L 620 500 Z',
+      cx: 630,
+      cy: 430,
+      index: 1
+    },
+    {
+      name: 'Queens',
+      path: 'M 680 150 L 780 140 L 800 300 L 650 360 L 650 200 Z',
+      cx: 730,
+      cy: 220,
+      index: 3
+    },
+    {
+      name: 'Staten Island',
+      path: 'M 420 450 L 520 460 L 520 550 L 420 540 Z',
+      cx: 470,
+      cy: 500,
+      index: 4
+    }
+  ];
+
+  // Draw borough paths with animation
+  boroughs.forEach((b, idx) => {
+    const path = document.createElementNS(svgNs, 'path');
+    const gapScore = DATA.gap_score[b.index];
+    const statusClass = gapScore > 5 ? 'critical' : gapScore > 3 ? 'high-need' : 'moderate';
+    
+    path.setAttribute('d', b.path);
+    path.setAttribute('class', `borough-path ${statusClass}`);
+    path.setAttribute('data-borough', b.name);
+    path.setAttribute('data-gap', gapScore);
+    
+    // Animation
+    path.style.animation = `fadeInPath 0.8s ease-out ${idx * 0.15}s forwards`;
+    path.style.opacity = '0';
+    
+    path.addEventListener('mouseenter', function() {
+      document.querySelectorAll('.borough-path').forEach(p => p.style.opacity = '0.5');
+      this.style.opacity = '1';
+    });
+    path.addEventListener('mouseleave', function() {
+      document.querySelectorAll('.borough-path').forEach(p => p.style.opacity = '1');
+    });
+    
+    svg.appendChild(path);
+  });
+
+  // Add labels
+  boroughs.forEach((b, idx) => {
+    const text = document.createElementNS(svgNs, 'text');
+    const gapScore = DATA.gap_score[b.index];
+    
+    text.setAttribute('x', b.cx);
+    text.setAttribute('y', b.cy);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('dominant-baseline', 'middle');
+    text.setAttribute('class', 'borough-label');
+    text.setAttribute('style', `fill: ${BOROUGH_COLORS[b.index]}; animation: fadeInPath 0.8s ease-out ${idx * 0.15 + 0.2}s forwards; opacity: 0;`);
+    text.textContent = b.name;
+    
+    svg.appendChild(text);
+
+    // Add gap score
+    const stat = document.createElementNS(svgNs, 'text');
+    stat.setAttribute('x', b.cx);
+    stat.setAttribute('y', b.cy + 20);
+    stat.setAttribute('text-anchor', 'middle');
+    stat.setAttribute('class', 'borough-stat');
+    stat.setAttribute('style', `animation: fadeInPath 0.8s ease-out ${idx * 0.15 + 0.3}s forwards; opacity: 0;`);
+    stat.textContent = `Gap: +${gapScore}`;
+    
+    svg.appendChild(stat);
+  });
+
+  // Add animation keyframes
+  if (!document.getElementById('mapAnimations')) {
+    const style = document.createElement('style');
+    style.id = 'mapAnimations';
+    style.textContent = `
+      @keyframes fadeInPath {
+        from { opacity: 0; filter: drop-shadow(0 0 0px rgba(58, 139, 255, 0)); }
+        to { opacity: 1; filter: drop-shadow(0 0 10px rgba(58, 139, 255, 0.3)); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Render legend
+  const legend = document.getElementById('mapLegend');
+  const statuses = [
+    { label: 'Critical Gap', className: 'critical', color: '#ff3a3a' },
+    { label: 'High Need', className: 'high-need', color: '#ff7f40' },
+    { label: 'Moderate', className: 'moderate', color: '#ffcc44' }
+  ];
+
+  statuses.forEach(s => {
+    const item = document.createElement('div');
+    item.style.cssText = 'padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px;';
+    item.innerHTML = `
+      <div style="width: 30px; height: 30px; background: ${s.color}66; border: 2px solid ${s.color}; border-radius: 4px; margin: 0 auto 0.3rem;"></div>
+      <div style="font-size: 0.75rem; font-weight: 600;">${s.label}</div>
+    `;
+    legend.appendChild(item);
+  });
+}
+
+// Call map renderer when slide 4 becomes visible
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && e.target.id === 'slide3' && !window.mapRendered) {
+      window.mapRendered = true;
+      setTimeout(renderNYCMap, 100);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const slide4 = document.getElementById('slide3');
+  if (slide4) observer.observe(slide4);
+});
 
 // ============================================================
 // HERO NUMBER COUNTER

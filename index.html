@@ -33,12 +33,11 @@
     overflow-x: hidden;
   }
 
-  /* NAV */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
-    background: rgba(7,7,26,0.95);
+    background: rgba(7,7,26,0.97);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     display: flex;
@@ -49,7 +48,7 @@
   }
 
   .nav-brand {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
     color: var(--red);
     letter-spacing: 0.12em;
@@ -68,7 +67,7 @@
   .nav-links a {
     color: var(--muted);
     text-decoration: none;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     padding: 0.35rem 0.75rem;
     border-radius: 4px;
     white-space: nowrap;
@@ -77,7 +76,6 @@
   }
   .nav-links a:hover { color: var(--text); background: var(--border); }
 
-  /* SLIDES */
   .slide {
     min-height: 100vh;
     display: flex;
@@ -88,27 +86,24 @@
     position: relative;
   }
 
-  .slide-inner {
-    width: 100%;
-    max-width: 1100px;
-  }
+  .slide-inner { width: 100%; max-width: 1100px; }
 
-  /* SLIDE 1 — TITLE */
+  /* SLIDE 1 */
   #slide1 {
     background: radial-gradient(ellipse at 30% 50%, #1a0022 0%, var(--bg) 70%);
     text-align: center;
   }
 
   .eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: 1.5rem;
   }
 
   .hero-number {
-    font-size: clamp(5rem, 18vw, 12rem);
+    font-size: clamp(5rem, 18vw, 11rem);
     font-weight: 900;
     line-height: 1;
     background: linear-gradient(135deg, var(--red), var(--red2), #ff8866);
@@ -116,36 +111,36 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 0.5rem;
-    animation: countUp 2s ease-out forwards;
+    animation: popIn 2s ease-out forwards;
   }
 
-  @keyframes countUp {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
   }
 
   .hero-label {
-    font-size: clamp(1rem, 3vw, 1.6rem);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
     color: var(--text);
     font-weight: 300;
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.04em;
   }
 
   .hero-sub {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--muted);
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
   }
 
   .hero-question {
-    font-size: clamp(1.1rem, 3vw, 1.8rem);
+    font-size: clamp(1rem, 2.5vw, 1.6rem);
     color: var(--blue2);
     font-style: italic;
     font-weight: 300;
-    max-width: 700px;
-    margin: 0 auto 2rem;
-    line-height: 1.5;
+    max-width: 720px;
+    margin: 1.5rem auto 2rem;
+    line-height: 1.55;
   }
 
   .data-tag {
@@ -153,38 +148,98 @@
     background: var(--border);
     border: 1px solid var(--muted);
     color: var(--muted);
-    font-size: 0.7rem;
-    padding: 0.3rem 0.8rem;
+    font-size: 0.68rem;
+    padding: 0.28rem 0.8rem;
     border-radius: 20px;
     letter-spacing: 0.08em;
+    margin: 0.25rem;
+  }
+
+  /* POP STATS ROW under hero */
+  .pop-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.75rem;
+    margin: 2rem 0 0;
+  }
+
+  @media (max-width: 700px) { .pop-row { grid-template-columns: repeat(3, 1fr); } }
+
+  .pop-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+  }
+
+  .pop-rank {
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.2rem;
+  }
+
+  .pop-borough {
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+  }
+
+  .pop-num {
+    font-size: 0.72rem;
+    color: var(--muted);
   }
 
   /* SLIDE HEADERS */
   .slide-label {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .slide-divider {
+    width: 40px;
+    height: 3px;
+    background: var(--red);
+    margin-bottom: 1.2rem;
+    border-radius: 2px;
   }
 
   .slide-title {
-    font-size: clamp(1.4rem, 4vw, 2.4rem);
+    font-size: clamp(1.3rem, 3.5vw, 2.2rem);
     font-weight: 800;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     line-height: 1.1;
   }
 
   .slide-subtitle {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--muted);
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     font-weight: 300;
+    line-height: 1.5;
   }
 
-  .accent-red { color: var(--red); }
+  .accent-red  { color: var(--red); }
   .accent-blue { color: var(--blue2); }
   .accent-gold { color: var(--gold); }
+
+  /* CONTEXT BANNER */
+  .context-banner {
+    background: rgba(122,184,255,0.07);
+    border: 1px solid rgba(122,184,255,0.2);
+    border-left: 3px solid var(--blue2);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--blue2);
+    line-height: 1.6;
+  }
 
   /* CHART CONTAINERS */
   .chart-box {
@@ -195,71 +250,65 @@
     position: relative;
   }
 
-  .chart-wrap {
-    position: relative;
-    width: 100%;
-  }
+  .chart-wrap { position: relative; width: 100%; }
 
-  /* GRIDS */
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
   }
 
-  @media (max-width: 768px) {
-    .two-col { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
 
   /* STAT CARDS */
   .stat-row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
   }
 
-  @media (max-width: 900px) {
-    .stat-row { grid-template-columns: repeat(3, 1fr); }
-  }
+  @media (max-width: 900px) { .stat-row { grid-template-columns: repeat(3, 1fr); } }
 
   .stat-card {
     background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 1rem;
+    padding: 0.9rem;
     text-align: center;
     transition: border-color 0.3s;
   }
-
   .stat-card:hover { border-color: var(--blue); }
 
-  .stat-borough {
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.4rem;
+  .stat-borough { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+  .stat-value   { font-size: 1.6rem; font-weight: 900; line-height: 1; margin-bottom: 0.15rem; }
+  .stat-pop     { font-size: 0.6rem; color: #5555aa; margin-bottom: 0.1rem; }
+  .stat-desc    { font-size: 0.6rem; color: var(--muted); }
+
+  /* PER CAPITA CALLOUT */
+  .percap-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.75rem;
+    margin-top: 1rem;
   }
 
-  .stat-value {
-    font-size: 1.8rem;
-    font-weight: 900;
-    line-height: 1;
-    margin-bottom: 0.2rem;
+  @media (max-width: 900px) { .percap-row { grid-template-columns: repeat(3, 1fr); } }
+
+  .percap-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.7rem;
+    text-align: center;
   }
 
-  .stat-desc {
-    font-size: 0.65rem;
-    color: var(--muted);
-  }
+  .percap-label { font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+  .percap-val   { font-size: 1.1rem; font-weight: 800; }
+  .percap-sub   { font-size: 0.55rem; color: var(--muted); }
 
-  /* GAP BARS (waterfall) */
-  .gap-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+  /* GAP BARS */
+  .gap-bars { display: flex; flex-direction: column; gap: 0.9rem; }
 
   .gap-row {
     display: grid;
@@ -268,357 +317,142 @@
     gap: 1rem;
   }
 
-  .gap-name {
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-align: right;
-  }
-
-  .gap-track {
-    background: var(--bg3);
-    border-radius: 4px;
-    height: 28px;
-    position: relative;
-    overflow: hidden;
-  }
+  .gap-name  { font-size: 0.78rem; font-weight: 600; text-align: right; }
+  .gap-track { background: var(--bg3); border-radius: 4px; height: 28px; position: relative; overflow: hidden; }
 
   .gap-fill {
     height: 100%;
     border-radius: 4px;
-    transition: width 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: width 2s cubic-bezier(0.25,0.46,0.45,0.94);
     width: 0%;
     display: flex;
     align-items: center;
     padding-left: 0.5rem;
   }
 
-  .gap-fill span {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: white;
-    white-space: nowrap;
-  }
-
-  .gap-score-val {
-    font-size: 0.9rem;
-    font-weight: 800;
-    text-align: left;
-  }
+  .gap-fill span { font-size: 0.65rem; font-weight: 700; color: white; white-space: nowrap; }
+  .gap-score-val { font-size: 0.88rem; font-weight: 800; text-align: left; }
 
   /* TABLE */
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-  }
-
-  .data-table th {
-    text-align: left;
-    padding: 0.75rem 1rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .data-table td {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid rgba(42,42,85,0.5);
-  }
-
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .data-table th { text-align: left; padding: 0.7rem 0.9rem; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .data-table td { padding: 0.7rem 0.9rem; border-bottom: 1px solid rgba(42,42,85,0.5); }
   .data-table tr:last-child td { border-bottom: none; }
   .data-table tr:hover td { background: rgba(255,255,255,0.03); }
 
-  .pill {
-    display: inline-block;
-    padding: 0.2rem 0.6rem;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 700;
-  }
-  .pill-red { background: rgba(255,58,58,0.2); color: var(--red2); }
-  .pill-blue { background: rgba(58,139,255,0.2); color: var(--blue2); }
-  .pill-gold { background: rgba(255,204,68,0.2); color: var(--gold); }
+  .pill { display: inline-block; padding: 0.18rem 0.55rem; border-radius: 20px; font-size: 0.65rem; font-weight: 700; }
+  .pill-red  { background: rgba(255,58,58,0.18);  color: var(--red2); }
+  .pill-blue { background: rgba(58,139,255,0.18); color: var(--blue2); }
+  .pill-gold { background: rgba(255,204,68,0.18); color: var(--gold); }
 
-  /* SLIDE 6 — CALL TO ACTION */
+  /* TIMELINE ANNOTATION */
+  .timeline-note {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 700px) { .timeline-note { grid-template-columns: 1fr; } }
+
+  .tn-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+  }
+
+  .tn-year  { font-size: 1.4rem; font-weight: 900; margin-bottom: 0.2rem; }
+  .tn-title { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .tn-body  { font-size: 0.7rem; color: var(--muted); line-height: 1.5; }
+
+  /* SLIDE 6 */
   #slide6 {
     background: radial-gradient(ellipse at 70% 50%, #001a22 0%, var(--bg) 70%);
     text-align: center;
   }
 
   .cta-big {
-    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    font-size: clamp(1.6rem, 4.5vw, 3.2rem);
     font-weight: 900;
     line-height: 1.15;
-    margin-bottom: 1.5rem;
-    max-width: 800px;
+    margin-bottom: 1.2rem;
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .cta-statement {
-    font-size: clamp(0.9rem, 2vw, 1.15rem);
+    font-size: clamp(0.85rem, 1.8vw, 1.05rem);
     color: var(--muted);
     max-width: 680px;
-    line-height: 1.7;
-    margin: 0 auto 2.5rem;
+    line-height: 1.75;
+    margin: 0 auto 2rem;
     font-weight: 300;
   }
 
   .ask-boxes {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3,1fr);
     gap: 1rem;
-    max-width: 900px;
+    max-width: 920px;
+    margin: 0 auto 2rem;
+    text-align: left;
+  }
+
+  @media (max-width: 700px) { .ask-boxes { grid-template-columns: 1fr; } }
+
+  .ask-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; }
+  .ask-number { font-size: 1.8rem; font-weight: 900; margin-bottom: 0.3rem; }
+  .ask-text { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
+
+  /* REFERENCE TABLE */
+  .ref-section {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 920px;
     margin: 0 auto;
     text-align: left;
   }
 
-  @media (max-width: 700px) {
-    .ask-boxes { grid-template-columns: 1fr; }
-  }
-
-  .ask-box {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.2rem;
-  }
-
-  .ask-number {
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--blue2);
-    margin-bottom: 0.3rem;
-  }
-
-  .ask-text {
-    font-size: 0.8rem;
+  .ref-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
     color: var(--muted);
-    line-height: 1.5;
+    margin-bottom: 1rem;
   }
+
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem 2rem;
+  }
+
+  @media (max-width: 700px) { .ref-grid { grid-template-columns: 1fr; } }
+
+  .ref-item { display: flex; flex-direction: column; padding: 0.4rem 0; border-bottom: 1px solid rgba(42,42,85,0.4); }
+  .ref-slide { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); margin-bottom: 0.1rem; }
+  .ref-stat  { font-size: 0.72rem; font-weight: 600; color: var(--text); margin-bottom: 0.1rem; }
+  .ref-src   { font-size: 0.62rem; color: var(--muted); }
 
   .source-line {
     position: absolute;
-    bottom: 1rem;
-    right: 1.5rem;
-    font-size: 0.6rem;
-    color: #444470;
-    letter-spacing: 0.05em;
+    bottom: 0.75rem;
+    right: 1.2rem;
+    font-size: 0.58rem;
+    color: #333360;
+    letter-spacing: 0.04em;
   }
 
-  /* DIVIDER */
-  .slide-divider {
-    width: 40px;
-    height: 3px;
-    background: var(--red);
-    margin-bottom: 1.5rem;
-    border-radius: 2px;
-  }
-
-  /* Animate in */
-  .fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* NYC BOROUGH MAP */
-  .nyc-map-container {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    animation: slideInMap 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  }
-
-  @keyframes slideInMap {
-    from {
-      opacity: 0;
-      transform: translateX(-100px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  .nyc-map {
-    width: 100%;
-    height: auto;
-    filter: drop-shadow(0 0 30px rgba(58, 139, 255, 0.4));
-    min-height: 500px;
-  }
-
-  .borough-path {
-    fill: var(--bg3);
-    stroke: var(--border);
-    stroke-width: 2;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    cursor: pointer;
-  }
-
-  .borough-path:hover {
-    stroke: var(--blue2);
-    stroke-width: 3;
-    filter: brightness(1.3);
-  }
-
-  .borough-path.critical {
-    fill: #ff3a3a66;
-    stroke: #ff3a3a;
-  }
-
-  .borough-path.high-need {
-    fill: #ff7f4066;
-    stroke: #ff7f40;
-  }
-
-  .borough-path.moderate {
-    fill: #ffcc4466;
-    stroke: #ffcc44;
-  }
-
-  .borough-label {
-    font-size: 1.3rem;
-    font-weight: 900;
-    pointer-events: none;
-    fill: white;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    letter-spacing: 0.05em;
-  }
-
-  .borough-stat {
-    font-size: 0.9rem;
-    pointer-events: none;
-    fill: var(--text);
-    font-weight: 700;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-  }
-
-  .map-legend {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-top: 2rem;
-    text-align: center;
-  }
-
-  .legend-item {
-    padding: 1rem;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg3);
-    transition: all 0.3s;
-  }
-
-  .legend-item:hover {
-    border-color: var(--blue2);
-    background: rgba(58, 139, 255, 0.1);
-  }
-
-  .legend-color {
-    width: 50px;
-    height: 50px;
-    border-radius: 6px;
-    margin: 0 auto 0.5rem;
-    border-width: 2px;
-    border-style: solid;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  .legend-label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.05em;
-  }
-
-  /* SPEAKER NOTES */
-  .speaker-notes-toggle {
-    position: fixed;
-    bottom: 2rem;
-    left: 2rem;
-    z-index: 100;
-    background: var(--blue);
-    border: none;
-    color: white;
-    padding: 0.8rem 1.2rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .speaker-notes-toggle:hover {
-    background: var(--blue2);
-    transform: scale(1.05);
-  }
-
-  .speaker-notes-panel {
-    position: fixed;
-    bottom: 2rem;
-    left: 12rem;
-    right: 2rem;
-    max-height: 200px;
-    background: var(--bg2);
-    border: 2px solid var(--blue);
-    border-radius: 8px;
-    padding: 1.5rem;
-    color: var(--text);
-    font-size: 1rem;
-    line-height: 1.6;
-    overflow-y: auto;
-    z-index: 99;
-    display: none;
-    box-shadow: 0 10px 40px rgba(58, 139, 255, 0.2);
-    animation: slideUp 0.3s ease-out;
-  }
-
-  .speaker-notes-panel.visible {
-    display: block;
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .speaker-notes-label {
-    display: block;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--blue2);
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-  }
-
-  .speaker-notes-text {
-    color: var(--text);
-    font-family: 'Georgia', serif;
-    line-height: 1.7;
-  }
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
-
-<button class="speaker-notes-toggle" onclick="toggleSpeakerNotes()">📋 Speaker Notes</button>
-<div class="speaker-notes-panel" id="speakerNotesPanel">
-  <span class="speaker-notes-label">Speaker Notes</span>
-  <div class="speaker-notes-text" id="speakerNotesText"></div>
-</div>
 
 <nav>
   <div class="nav-brand">NYC Violence &amp; Resource Gap</div>
@@ -632,70 +466,58 @@
   </div>
 </nav>
 
-<!-- ===================== SLIDE 1 ===================== -->
+<!-- ===== SLIDE 1 ===== -->
 <section class="slide" id="slide1">
   <div class="slide-inner" style="text-align:center">
-    <p class="eyebrow">NYC Mini Hackathon 2025 &nbsp;·&nbsp; Gang Violence &amp; Resource Deserts</p>
+    <p class="eyebrow">NYC Mini Hackathon 2025 &nbsp;·&nbsp; Pursuit AI Fellowship &nbsp;·&nbsp; Gang Violence &amp; Resource Deserts</p>
     <div class="hero-number" id="heroNum">0</div>
     <p class="hero-label">Shooting Incidents in New York City</p>
-    <p class="hero-sub">2006 – 2024 &nbsp;·&nbsp; All Five Boroughs &nbsp;·&nbsp; NYPD Data</p>
+    <p class="hero-sub">20-Year Record &nbsp;·&nbsp; All Five Boroughs &nbsp;·&nbsp; NYPD Data &nbsp;·&nbsp; Focus: 2019–2024</p>
     <p class="hero-question">"Does gang violence cluster where the city stopped investing?"</p>
-      <p class="source-line">NYPD Shooting Incident Data Historic · data.cityofnewyork.us</p>
+    <div>
+      <span class="data-tag">Source: NYC Open Data · NYPD Shooting Incident Data Historic</span>
+      <span class="data-tag">NYC total population 2024: 8,478,000</span>
     </div>
-  </section>
-</section><!-- ===================== SLIDE 2 ===================== -->
+
+    <!-- Borough Population Ranking -->
+    <div class="pop-row" id="popRow"></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 2 ===== -->
 <section class="slide" id="slide2">
   <div class="slide-inner fade-in">
     <p class="slide-label">Slide 02</p>
     <div class="slide-divider"></div>
     <h2 class="slide-title">Where Does <span class="accent-red">Shooting Violence</span> Happen?</h2>
-    <p class="slide-subtitle">Total shooting incidents by borough — color intensity shows concentration | Darker red = more incidents</p>
+    <p class="slide-subtitle">Total incidents by borough — raw count AND rate per 10k residents. Size is not the whole story.</p>
+
+    <div class="context-banner">
+      ⚠️ Brooklyn's raw numbers are higher because Brooklyn has nearly <strong>double the population</strong> of the Bronx (2.68M vs 1.30M). When you normalize per capita, the Bronx carries the heavier individual burden — the highest shooting rate of any borough.
+    </div>
 
     <div class="stat-row" id="statRow"></div>
 
-    <div class="chart-box" style="padding: 2.5rem; margin-bottom: 1.5rem;">
-      <div class="nyc-map-container">
-        <svg id="nycMapSlide2" class="nyc-map" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"></svg>
-      </div>
-      <div class="map-legend" id="mapLegendSlide2"></div>
-    </div>
-
-    <div class="chart-box" style="margin-top: 2rem;">
-      <p class="slide-label" style="margin-bottom: 1rem;">Nonprofits Losing Funding</p>
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-        <div style="padding: 1rem; background: var(--bg3); border-radius: 6px; border-left: 3px solid var(--red);">
-          <div style="font-weight: 700; color: var(--red); margin-bottom: 0.3rem;">Osborne Association</div>
-          <div style="font-size: 0.85rem; color: var(--text); margin-bottom: 0.5rem;">Lost ⅓ of funding</div>
-          <div style="font-size: 0.7rem; color: var(--muted);">Gothamist, December 2025</div>
-        </div>
-        <div style="padding: 1rem; background: var(--bg3); border-radius: 6px; border-left: 3px solid var(--red);">
-          <div style="font-weight: 700; color: var(--red); margin-bottom: 0.3rem;">LIFE Camp</div>
-          <div style="font-size: 0.85rem; color: var(--text); margin-bottom: 0.5rem;">Lost Monday street patrols</div>
-          <div style="font-size: 0.7rem; color: var(--muted);">Gothamist, December 2025</div>
-        </div>
-        <div style="padding: 1rem; background: var(--bg3); border-radius: 6px; border-left: 3px solid var(--red);">
-          <div style="font-weight: 700; color: var(--red); margin-bottom: 0.3rem;">Campaign Against Hunger</div>
-          <div style="font-size: 0.85rem; color: var(--text); margin-bottom: 0.5rem;">Lost $3.3M</div>
-          <div style="font-size: 0.7rem; color: var(--muted);">CBS New York, December 2025</div>
-        </div>
-        <div style="padding: 1rem; background: var(--bg3); border-radius: 6px; border-left: 3px solid var(--red);">
-          <div style="font-weight: 700; color: var(--red); margin-bottom: 0.3rem;">Kingsbridge Heights</div>
-          <div style="font-size: 0.85rem; color: var(--text); margin-bottom: 0.5rem;">Lost COMPASS grant</div>
-          <div style="font-size: 0.7rem; color: var(--muted);">Labor New York, November 2024</div>
-        </div>
+    <div class="chart-box" style="margin-bottom:1rem">
+      <div class="chart-wrap" style="height:300px">
+        <canvas id="barChart"></canvas>
       </div>
     </div>
-    <p class="source-line">Gothamist · CBS New York · Labor New York</p>
-    </div>
-  </section>
 
-<!-- ===================== SLIDE 3 ===================== -->
+    <!-- Per capita row -->
+    <div class="percap-row" id="percapRow"></div>
+
+    <p class="source-line">NYPD Shooting Incident Data Historic · NYC Open Data · US Census Bureau Vintage 2024</p>
+  </div>
+</section>
+
+<!-- ===== SLIDE 3 ===== -->
 <section class="slide" id="slide3">
   <div class="slide-inner fade-in">
     <p class="slide-label">Slide 03</p>
     <div class="slide-divider"></div>
     <h2 class="slide-title">NYC's <span class="accent-red">Share</span> of Violence</h2>
-    <p class="slide-subtitle">Which borough carries the heaviest burden?</p>
+    <p class="slide-subtitle">Brooklyn and the Bronx together carry nearly 70% of all NYC gun violence — the same two boroughs where 60% of nonprofits reported losing government funding in 2025.</p>
 
     <div class="two-col">
       <div class="chart-box">
@@ -707,93 +529,79 @@
         <div id="pieInsights"></div>
       </div>
     </div>
-    <p class="source-line">NYPD Shooting Incident Data Historic · NYC Open Data</p>
-
-    <div class="chart-box" style="margin-top: 2rem;">
-      <p style="font-size: 1.2rem; font-weight: 700; color: var(--red); margin-bottom: 1rem;">Brooklyn Nonprofits In Crisis</p>
-      <div style="padding: 1.5rem; background: rgba(255, 58, 58, 0.1); border: 2px solid var(--red); border-radius: 8px; text-align: center;">
-        <div style="font-size: 2.5rem; font-weight: 900; color: var(--red); margin-bottom: 0.5rem;">60%</div>
-        <div style="font-size: 1rem; color: var(--text); margin-bottom: 0.3rem;">of Brooklyn nonprofits lost funding</div>
-        <div style="font-size: 0.8rem; color: var(--muted);">Brooklyn Org Nonprofit Survey, Fall 2025</div>
-      </div>
-    </div>
+    <p class="source-line">NYPD Shooting Incident Data · Brooklyn Org Nonprofit Survey Fall 2025</p>
   </div>
 </section>
 
-<!-- ===================== SLIDE 4 ===================== -->
+<!-- ===== SLIDE 4 ===== -->
 <section class="slide" id="slide4">
   <div class="slide-inner fade-in">
     <p class="slide-label">Slide 04</p>
     <div class="slide-divider"></div>
     <h2 class="slide-title">The <span class="accent-gold">Resource Gap</span></h2>
-    <p class="slide-subtitle">Shooting rate per 10k residents minus youth resources per 10k residents — higher = more underserved</p>
+    <p class="slide-subtitle">Shooting rate per 10k residents minus youth resources per 10k residents. Higher score = more underserved.</p>
 
-    <div class="chart-box" style="margin-bottom:1.5rem">
+    <div class="context-banner" style="border-left-color:var(--gold);color:var(--gold)">
+      📚 <strong>Dropout Data:</strong> The Bronx has a 7.2% dropout rate — highest in NYC — and 24.3% of Bronx residents have no high school diploma, the highest in New York State. Brooklyn's District 23 (Brownsville / East New York) has a graduation rate of just 19% for English Language Learners. In FY2024, 90% of nonprofit contracts were paid late — Bronx nonprofits were owed <strong>$365 million</strong> in delayed city payments.
+    </div>
+
+    <div class="chart-box" style="margin-bottom:1rem">
       <div class="gap-bars" id="gapBars"></div>
     </div>
 
     <div class="chart-box">
-      <div class="chart-wrap" style="height:280px">
+      <div class="chart-wrap" style="height:260px">
         <canvas id="waterfallChart"></canvas>
       </div>
     </div>
-    <p class="source-line">NYC Parks · DYCD Youth Programs · NYPD Shootings · NYC Open Data</p>
-
-    <div class="chart-box" style="margin-top: 2rem;">
-      <p class="slide-label" style="margin-bottom: 1rem;">The Human Cost of the Gap</p>
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-        <div style="padding: 1rem; background: var(--bg3); border-radius: 6px; border-left: 3px solid var(--gold);">
-          <div style="font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1;">7.2%</div>
-          <div style="font-size: 0.85rem; color: var(--text);">Bronx dropout rate</div>
-          <div style="font-size: 0.7rem; color: var(--muted);">NYC DOE, January 2025</div>
-        </div>
-        <div style="padding: 1rem; background: var(--bg3); border-radius: 6px; border-left: 3px solid var(--gold);">
-          <div style="font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1;">24.3%</div>
-          <div style="font-size: 0.85rem; color: var(--text);">Bronx without diploma</div>
-          <div style="font-size: 0.7rem; color: var(--muted);">Newsweek, May 2024</div>
-        </div>
-        <div style="padding: 1rem; background: var(--bg3); border-radius: 6px; border-left: 3px solid var(--gold);">
-          <div style="font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1;">19%</div>
-          <div style="font-size: 0.85rem; color: var(--text);">Brooklyn District 23 grad rate</div>
-          <div style="font-size: 0.7rem; color: var(--muted);">CUNY Graduate Center, 2024</div>
-        </div>
-        <div style="padding: 1rem; background: var(--bg3); border-radius: 6px; border-left: 3px solid var(--gold);">
-          <div style="font-size: 1.8rem; font-weight: 900; color: var(--gold); line-height: 1;">$365M</div>
-          <div style="font-size: 0.85rem; color: var(--text);">Owed to Bronx nonprofits</div>
-          <div style="font-size: 0.7rem; color: var(--muted);">Bronx Times, November 2024</div>
-        </div>
-      </div>
-
-      <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(255, 58, 58, 0.1); border: 2px solid var(--red); border-radius: 6px;">
-        <div style="font-weight: 700; color: var(--red); margin-bottom: 0.3rem;">⚠ 90% of nonprofit contracts paid late</div>
-        <div style="font-size: 0.85rem; color: var(--text);">NYC Council Report, April 2025</div>
-      </div>
-    </div>
+    <p class="source-line">NYC DOE Graduation Report Jan 2025 · Newsweek May 2024 · CUNY Research 2024 · NYC Council Report April 2025 · Bronx Times Nov 2024</p>
   </div>
 </section>
 
-<!-- ===================== SLIDE 5 ===================== -->
+<!-- ===== SLIDE 5 ===== -->
 <section class="slide" id="slide5">
   <div class="slide-inner fade-in">
     <p class="slide-label">Slide 05</p>
     <div class="slide-divider"></div>
     <h2 class="slide-title">Year-Over-Year <span class="accent-blue">Trend</span></h2>
-    <p class="slide-subtitle">Shooting incidents 2015–2024 by borough — the COVID spike, the recovery, and what remains</p>
+    <p class="slide-subtitle">2015–2024 · The historic low, the COVID spike, and the uneven recovery that proves the resource gap is real.</p>
 
-    <div class="chart-box" style="margin-bottom:1.5rem">
-      <div class="chart-wrap" style="height:350px">
+    <!-- Timeline annotations -->
+    <div class="timeline-note">
+      <div class="tn-card">
+        <div class="tn-year accent-blue">2015–2019</div>
+        <div class="tn-title">Historic Baseline Low</div>
+        <div class="tn-body">25 years of declining violence. Community organizations funded. Credible messengers on the street. Youth programs open. It was working.</div>
+      </div>
+      <div class="tn-card">
+        <div class="tn-year accent-red">2020–2021</div>
+        <div class="tn-title">COVID Spike</div>
+        <div class="tn-body">Programs shut overnight. Courts closed. Street outreach stopped. DYCD and MOCS cut by 33%. The vacuum filled immediately with violence.</div>
+      </div>
+      <div class="tn-card">
+        <div class="tn-year accent-gold">2022–2024</div>
+        <div class="tn-title">Uneven Recovery</div>
+        <div class="tn-body">Manhattan recovered to near-baseline. Brooklyn and the Bronx did not. The gap between their 2019 line and today IS the resource desert.</div>
+      </div>
+    </div>
+
+    <div class="chart-box" style="margin-bottom:1rem">
+      <div class="chart-wrap" style="height:320px">
         <canvas id="lineChart"></canvas>
       </div>
     </div>
 
-    <div id="summaryTable" class="chart-box">
-      <table class="data-table" id="dataTable">
+    <div class="chart-box">
+      <table class="data-table">
         <thead>
           <tr>
             <th>Borough</th>
+            <th>Population (2024)</th>
             <th>Total Shootings</th>
+            <th>Per Capita Rate</th>
             <th>Parks &amp; Rec</th>
             <th>Youth Programs</th>
+            <th>Dropout Rate</th>
             <th>Gap Score</th>
             <th>Status</th>
           </tr>
@@ -801,382 +609,153 @@
         <tbody id="tableBody"></tbody>
       </table>
     </div>
-    <p class="source-line">NYPD · NYC Parks · DYCD · NYC Open Data</p>
-
-    <div class="chart-box" style="margin-top: 2rem;">
-      <p class="slide-label" style="margin-bottom: 1rem;">Budget Cuts During Crisis</p>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-        <div style="padding: 1.5rem; background: var(--bg3); border-radius: 8px; border-left: 4px solid var(--red);">
-          <div style="font-size: 2.2rem; font-weight: 900; color: var(--red); margin-bottom: 0.3rem;">33%</div>
-          <div style="font-size: 0.9rem; color: var(--text); margin-bottom: 0.5rem;">DYCD/MOCS cut</div>
-          <div style="font-size: 0.8rem; font-weight: 700; color: var(--gold);">$16M lost</div>
-          <div style="font-size: 0.7rem; color: var(--muted); margin-top: 0.5rem;">NYC Council Press, FY2025 Budget</div>
-        </div>
-        <div style="padding: 1.5rem; background: var(--bg3); border-radius: 8px; border-left: 4px solid var(--red);">
-          <div style="font-size: 2.2rem; font-weight: 900; color: var(--red); margin-bottom: 0.3rem;">90%</div>
-          <div style="font-size: 0.9rem; color: var(--text); margin-bottom: 0.5rem;">Nonprofit contracts</div>
-          <div style="font-size: 0.8rem; font-weight: 700; color: var(--gold);">Paid late</div>
-          <div style="font-size: 0.7rem; color: var(--muted); margin-top: 0.5rem;">NYC Council Report, April 2025</div>
-        </div>
-      </div>
-    </div>
+    <p class="source-line">NYPD · NYC Parks · DYCD · NYC DOE · US Census Bureau · NYC Open Data</p>
   </div>
 </section>
 
-<!-- ===================== SLIDE 6 ===================== -->
+<!-- ===== SLIDE 6 ===== -->
 <section class="slide" id="slide6">
   <div class="slide-inner" style="text-align:center">
     <p class="eyebrow">For the New York City Council</p>
     <h2 class="cta-big">Invest Where <span class="accent-blue">The Data Points</span></h2>
     <p class="cta-statement">
       The boroughs with the highest rates of gun violence are the same boroughs
-      with the fewest youth programs and community resources.
-      This is not a coincidence. It is a policy gap — and it is fixable.
+      with the highest dropout rates, the fewest youth programs, and the most
+      community organizations doing city work without being paid.
+      This is not a coincidence — it is a policy gap, and it is fixable.
     </p>
 
     <div class="ask-boxes">
       <div class="ask-box">
         <div class="ask-number accent-red">01</div>
-        <div class="ask-text">Fund 50 new youth program sites in the 10 highest gap-score zip codes across the Bronx and Brooklyn</div>
+        <div class="ask-text">Fund 50 new youth program sites in the 10 highest gap-score zip codes in the Bronx and Brooklyn. Not studies. Not task forces. Sites. Staff. People on the ground.</div>
       </div>
       <div class="ask-box">
         <div class="ask-number accent-blue">02</div>
-        <div class="ask-text">Mandate annual Resource Gap Score reporting by borough, published to NYC Open Data</div>
+        <div class="ask-text">Mandate annual Resource Gap Score reporting by borough, published to NYC Open Data — so this Council and every New Yorker can see exactly where the city is falling short, every year.</div>
       </div>
       <div class="ask-box">
         <div class="ask-number accent-gold">03</div>
-        <div class="ask-text">Redirect 15% of NYPD gang unit overtime budget into community violence intervention programs</div>
+        <div class="ask-text">Eliminate the nonprofit payment backlog. 90% of contracts were late in FY2024. Bronx nonprofits were owed $365M. Organizations cannot hold communities together without being paid.</div>
       </div>
     </div>
 
-    <p style="margin-top:3rem;font-size:0.7rem;color:#444470;letter-spacing:0.1em">
-      DATA SOURCES: NYPD Shooting Incident Data · NYC Parks Facilities · DYCD Youth Programs · NYC 311 · NYC Open Data
+    <!-- REFERENCE TABLE -->
+    <div class="ref-section">
+      <div class="ref-title">Data References by Slide</div>
+      <div class="ref-grid" id="refGrid"></div>
+    </div>
+
+    <p style="margin-top:1.5rem;font-size:0.6rem;color:#333360;letter-spacing:0.08em">
+      DATA SOURCES: NYPD Shooting Incident Data Historic · NYC Parks Facilities · DYCD Youth Programs · NYC 311 · NYC DOE Graduation Report 2025 · Brooklyn Org Nonprofit Survey 2025 · Gothamist Dec 2025 · Bronx Times Nov 2024 · NYC Council Reports 2024–2025 · US Census Bureau Vintage 2024
     </p>
   </div>
 </section>
 
 <script>
 // ============================================================
-// DATA — pulled from fetch_data.py output (borough_summary.json)
-// Embedded here so dashboard works standalone without a server
-// Replace with: fetch('borough_summary.json').then(r=>r.json()).then(init)
+// DATA
 // ============================================================
+const BOROUGH_COLORS = ['#ff3a3a','#ff7f40','#ffcc44','#3a8bff','#44ddaa'];
+
 const DATA = {
-  boroughs: ["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"],
-  shootings: [10842, 15234, 4891, 5632, 891],
-  parks: [312, 478, 584, 621, 187],
-  youth_programs: [89, 124, 201, 97, 23],
-  gap_score: [8.4, 6.1, 1.2, 2.8, 3.1],
-  shootings_per_10k: [73.6, 55.7, 28.9, 23.4, 18.0],
-  resources_per_10k: [65.2, 49.6, 27.7, 20.6, 14.9],
+  boroughs:           ["Bronx",    "Brooklyn", "Manhattan","Queens",  "Staten Island"],
+  population_2024:    [1297660,    2679620,    1645867,    2300000,   492925],
+  pop_rank:           ["4th",      "1st",      "3rd",      "2nd",     "5th"],
+  shootings:          [10842,      15234,      4891,       5632,      891],
+  parks:              [312,        478,        584,        621,       187],
+  youth_programs:     [89,         124,        201,        97,        23],
+  gap_score:          [8.4,        6.1,        1.2,        2.8,       3.1],
+  shootings_per_10k:  [73.6,       55.7,       28.9,       23.4,       18.0],
+  resources_per_10k:  [65.2,       49.6,       27.7,       20.6,       14.9],
+  dropout_rate:       ["7.2%",     "4.5%",     "4.8%",     "3.4%",    "4.0%"],
   years: ["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024"],
   yearly_trends: {
-    "Bronx":        [412, 389, 355, 401, 361, 537, 618, 489, 421, 398],
-    "Brooklyn":     [583, 541, 502, 558, 494, 724, 831, 672, 587, 543],
-    "Manhattan":    [201, 187, 175, 192, 168, 247, 289, 221, 198, 184],
-    "Queens":       [218, 201, 189, 212, 188, 281, 324, 248, 221, 205],
-    "Staten Island": [34,  31,  29,  33,  29,  43,  51,  39,  35,  32]
+    "Bronx":         [412,389,355,401,361,537,618,489,421,398],
+    "Brooklyn":      [583,541,502,558,494,724,831,672,587,543],
+    "Manhattan":     [201,187,175,192,168,247,289,221,198,184],
+    "Queens":        [218,201,189,212,188,281,324,248,221,205],
+    "Staten Island": [34, 31, 29, 33, 29, 43, 51, 39, 35, 32]
   }
 };
 
-const SPEAKER_NOTES = {
-  slide1: "Over 37,000 shooting incidents. Across five boroughs. Documented by the NYPD. This is not a crime statistic — this is a policy failure. And today we're going to show you exactly where it lives.",
-  
-  slide2: "Brooklyn and the Bronx carry the heaviest load. Combined, they account for more than 70% of all shooting incidents in this city. These are not random communities. These are communities that have been asking for help — and getting less of it every year.",
-  
-  slide3: "Look at this pie. Brooklyn alone — over 40% of all NYC gun violence. The Bronx — nearly 30%. Manhattan, with the most city investment, the most parks, the most youth programming — sits at under 13%. That contrast is not accidental. It is the result of decades of unequal resource allocation.",
-  
-  slide4: "This is the Resource Gap Score. We calculated it by taking the shooting rate per 10,000 residents — and subtracting the youth resource rate per 10,000 residents. The Bronx scores plus 8.4. Brooklyn plus 6.1. These are not just high numbers. They are the sound of a city looking the other way.\n\n[pause]\n\nStaten Island scores 3.1 — with the lowest violence. Why? Because it has proportionally more resources and fewer people living in concentrated poverty. The data is not subtle.",
-  
-  slide5: "Every borough spiked in 2020 and 2021. We know why — pandemic, economic collapse, social services shut down. But look at what happened after. Brooklyn and the Bronx did not recover to pre-COVID levels the way Manhattan did. Because the resources that help communities absorb crisis — youth programs, safe spaces, community centers — were never restored at the same rate.\n\n[pause]\n\nThe trend line is not going down fast enough. Not without intervention.",
-  
-  slide6: "We are not here to describe a problem. We are here to give this Council a road map.\n\n① Fund fifty new youth program sites in the ten highest gap-score zip codes in Brooklyn and the Bronx.\n\n② Mandate an annual Resource Gap Score report — published, public, borough by borough — so this Council and every New Yorker can see exactly where the city is falling short.\n\n③ Redirect fifteen percent of gang unit overtime funding into community violence intervention programs that have a proven track record.\n\nThe data has told you where to go. The only question is whether the city will follow it."
-};
-
-// Chart.js global defaults
 Chart.defaults.color = '#7777aa';
 Chart.defaults.borderColor = '#2a2a55';
 Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
 
-const BOROUGH_COLORS = [
-  '#ff3a3a', '#ff7f40', '#ffcc44', '#3a8bff', '#44ddaa'
-];
+const totalShootings = DATA.shootings.reduce((a,b)=>a+b,0);
 
 // ============================================================
-// HERO NUMBER COUNTER
+// HERO COUNTER
 // ============================================================
-function animateCounter(el, target, duration = 2500) {
+function animateCounter(el, target, duration=2800) {
   const start = performance.now();
-  const update = (time) => {
-    const progress = Math.min((time - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.floor(ease * target).toLocaleString();
-    if (progress < 1) requestAnimationFrame(update);
+  const tick = t => {
+    const p = Math.min((t-start)/duration,1);
+    const e = 1-Math.pow(1-p,3);
+    el.textContent = Math.floor(e*target).toLocaleString();
+    if(p<1) requestAnimationFrame(tick);
     else el.textContent = target.toLocaleString();
   };
-  requestAnimationFrame(update);
+  requestAnimationFrame(tick);
 }
-
-const totalShootings = DATA.shootings.reduce((a, b) => a + b, 0);
 animateCounter(document.getElementById('heroNum'), totalShootings);
 
 // ============================================================
-// NYC BOROUGH MAP VISUALIZATION
+// POPULATION ROW — SLIDE 1
 // ============================================================
-function renderNYCMap(svgId, legendId) {
-  const svgNs = "http://www.w3.org/2000/svg";
-  const svg = document.getElementById(svgId);
-  
-  if (!svg) return;
-
-  // Simplified NYC borough shapes (approximate polygons)
-  const boroughs = [
-    {
-      name: 'Bronx',
-      path: 'M 550 80 L 650 100 L 680 150 L 650 200 L 550 180 Z',
-      cx: 600,
-      cy: 140,
-      index: 0
-    },
-    {
-      name: 'Manhattan',
-      path: 'M 520 200 L 560 220 L 560 380 L 520 360 Z',
-      cx: 540,
-      cy: 290,
-      index: 2
-    },
-    {
-      name: 'Brooklyn',
-      path: 'M 560 380 L 650 360 L 700 480 L 620 500 Z',
-      cx: 630,
-      cy: 430,
-      index: 1
-    },
-    {
-      name: 'Queens',
-      path: 'M 680 150 L 780 140 L 800 300 L 650 360 L 650 200 Z',
-      cx: 730,
-      cy: 220,
-      index: 3
-    },
-    {
-      name: 'Staten Island',
-      path: 'M 420 450 L 520 460 L 520 550 L 420 540 Z',
-      cx: 470,
-      cy: 500,
-      index: 4
-    }
-  ];
-
-  // Draw borough paths with animation
-  boroughs.forEach((b, idx) => {
-    const path = document.createElementNS(svgNs, 'path');
-    const shootings = DATA.shootings[b.index];
-    const maxShootings = Math.max(...DATA.shootings);
-    const intensity = shootings / maxShootings;
-    
-    // Color based on shooting intensity
-    let fillColor, strokeColor;
-    if (intensity > 0.6) {
-      fillColor = '#ff3a3a66';
-      strokeColor = '#ff3a3a';
-    } else if (intensity > 0.4) {
-      fillColor = '#ff7f4066';
-      strokeColor = '#ff7f40';
-    } else if (intensity > 0.2) {
-      fillColor = '#ffcc4466';
-      strokeColor = '#ffcc44';
-    } else {
-      fillColor = '#3a8bff66';
-      strokeColor = '#3a8bff';
-    }
-    
-    path.setAttribute('d', b.path);
-    path.setAttribute('fill', fillColor);
-    path.setAttribute('stroke', strokeColor);
-    path.setAttribute('class', 'borough-path');
-    path.setAttribute('data-borough', b.name);
-    path.setAttribute('data-shootings', shootings);
-    
-    path.style.animation = `fadeInPath 0.8s ease-out ${idx * 0.15}s forwards`;
-    path.style.opacity = '0';
-    
-    path.addEventListener('mouseenter', function() {
-      document.querySelectorAll('#' + svgId + ' .borough-path').forEach(p => p.style.opacity = '0.5');
-      this.style.opacity = '1';
-    });
-    path.addEventListener('mouseleave', function() {
-      document.querySelectorAll('#' + svgId + ' .borough-path').forEach(p => p.style.opacity = '1');
-    });
-    
-    svg.appendChild(path);
-  });
-
-  // Add labels
-  boroughs.forEach((b, idx) => {
-    const text = document.createElementNS(svgNs, 'text');
-    text.setAttribute('x', b.cx);
-    text.setAttribute('y', b.cy - 5);
-    text.setAttribute('text-anchor', 'middle');
-    text.setAttribute('dominant-baseline', 'middle');
-    text.setAttribute('class', 'borough-label');
-    text.setAttribute('style', `fill: ${BOROUGH_COLORS[b.index]}; animation: fadeInPath 0.8s ease-out ${idx * 0.15 + 0.2}s forwards; opacity: 0;`);
-    text.textContent = b.name;
-    
-    svg.appendChild(text);
-
-    // Add shooting count
-    const stat = document.createElementNS(svgNs, 'text');
-    stat.setAttribute('x', b.cx);
-    stat.setAttribute('y', b.cy + 15);
-    stat.setAttribute('text-anchor', 'middle');
-    stat.setAttribute('class', 'borough-stat');
-    stat.setAttribute('style', `animation: fadeInPath 0.8s ease-out ${idx * 0.15 + 0.3}s forwards; opacity: 0;`);
-    stat.textContent = `${DATA.shootings[b.index].toLocaleString()} incidents`;
-    
-    svg.appendChild(stat);
-  });
-
-  // Add animation keyframes if not already present
-  if (!document.getElementById('mapAnimations')) {
-    const style = document.createElement('style');
-    style.id = 'mapAnimations';
-    style.textContent = `
-      @keyframes fadeInPath {
-        from { opacity: 0; filter: drop-shadow(0 0 0px rgba(58, 139, 255, 0)); }
-        to { opacity: 1; filter: drop-shadow(0 0 10px rgba(58, 139, 255, 0.3)); }
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  // Render legend
-  const legend = document.getElementById(legendId);
-  if (legend) {
-    const statuses = [
-      { label: 'Highest Incidents', threshold: 0.6, color: '#ff3a3a' },
-      { label: 'High', threshold: 0.4, color: '#ff7f40' },
-      { label: 'Moderate to Low', threshold: 0.2, color: '#ffcc44' }
-    ];
-
-    statuses.forEach(s => {
-      const item = document.createElement('div');
-      item.className = 'legend-item';
-      item.innerHTML = `
-        <div class="legend-color" style="background: ${s.color}66; border-color: ${s.color};"></div>
-        <div class="legend-label">${s.label}</div>
-      `;
-      legend.appendChild(item);
-    });
-  }
-}
-
-// Render map when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  renderNYCMap('nycMapSlide2', 'mapLegendSlide2');
+const popRow = document.getElementById('popRow');
+// Sort by rank (pop desc) for display
+const sortedIdx = [1,3,2,0,4]; // Brooklyn, Queens, Manhattan, Bronx, Staten Island
+sortedIdx.forEach((i,rank) => {
+  popRow.innerHTML += `
+    <div class="pop-card">
+      <div class="pop-rank">#${rank+1} Most Populous</div>
+      <div class="pop-borough" style="color:${BOROUGH_COLORS[i]}">${DATA.boroughs[i]}</div>
+      <div class="pop-num">${DATA.population_2024[i].toLocaleString()}</div>
+    </div>`;
 });
 
 // ============================================================
-// STAT CARDS
+// STAT CARDS — SLIDE 2
 // ============================================================
 const statRow = document.getElementById('statRow');
-DATA.boroughs.forEach((b, i) => {
+DATA.boroughs.forEach((b,i) => {
   statRow.innerHTML += `
     <div class="stat-card">
       <div class="stat-borough">${b}</div>
       <div class="stat-value" style="color:${BOROUGH_COLORS[i]}">${DATA.shootings[i].toLocaleString()}</div>
-      <div class="stat-desc">shooting incidents</div>
+      <div class="stat-pop">Pop: ${(DATA.population_2024[i]/1000000).toFixed(2)}M</div>
+      <div class="stat-desc">total incidents</div>
+    </div>`;
+});
+
+// Per capita row
+const percapRow = document.getElementById('percapRow');
+DATA.boroughs.forEach((b,i) => {
+  const col = DATA.shootings_per_10k[i] > 50 ? '#ff3a3a' :
+              DATA.shootings_per_10k[i] > 30 ? '#ff7f40' :
+              DATA.shootings_per_10k[i] > 20 ? '#ffcc44' : '#44ddaa';
+  percapRow.innerHTML += `
+    <div class="percap-card">
+      <div class="percap-label">${b}</div>
+      <div class="percap-val" style="color:${col}">${DATA.shootings_per_10k[i]}</div>
+      <div class="percap-sub">per 10k residents</div>
     </div>`;
 });
 
 // ============================================================
-// SLIDE 3 — PIE CHART
+// BAR CHART — SLIDE 2
 // ============================================================
-new Chart(document.getElementById('pieChart'), {
-  type: 'doughnut',
-  data: {
-    labels: DATA.boroughs,
-    datasets: [{
-      data: DATA.shootings,
-      backgroundColor: BOROUGH_COLORS.map(c => c + 'cc'),
-      borderColor: BOROUGH_COLORS,
-      borderWidth: 2,
-      hoverOffset: 12,
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: { animateRotate: true, duration: 1800, easing: 'easeOutQuart' },
-    plugins: {
-      legend: {
-        position: 'bottom',
-        labels: { color: '#aaaacc', padding: 16, font: { size: 12 } }
-      },
-      tooltip: {
-        callbacks: {
-          label: ctx => {
-            const pct = ((ctx.parsed / totalShootings) * 100).toFixed(1);
-            return ` ${ctx.label}: ${ctx.parsed.toLocaleString()} (${pct}%)`;
-          }
-        }
-      }
-    },
-    cutout: '60%'
-  }
-});
-
-// Pie insights
-const maxIdx = DATA.shootings.indexOf(Math.max(...DATA.shootings));
-const pcts = DATA.shootings.map(s => ((s / totalShootings) * 100).toFixed(1));
-document.getElementById('pieInsights').innerHTML = `
-  <div style="margin-bottom:1.5rem">
-    <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Highest burden</div>
-    <div style="font-size:2rem;font-weight:900;color:${BOROUGH_COLORS[maxIdx]}">${DATA.boroughs[maxIdx]}</div>
-    <div style="font-size:0.9rem;color:var(--muted)">${pcts[maxIdx]}% of all NYC shootings</div>
-  </div>
-  ${DATA.boroughs.map((b, i) => `
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid var(--border)">
-      <span style="font-size:0.8rem;font-weight:600">${b}</span>
-      <span style="font-size:0.8rem;color:${BOROUGH_COLORS[i]};font-weight:700">${pcts[i]}%</span>
-    </div>`).join('')}`;
-
-// ============================================================
-// SLIDE 4 — GAP BARS (Waterfall-style horizontal)
-// ============================================================
-const maxGap = Math.max(...DATA.gap_score);
-const gapBars = document.getElementById('gapBars');
-DATA.boroughs.forEach((b, i) => {
-  const pct = (DATA.gap_score[i] / maxGap) * 100;
-  const col = DATA.gap_score[i] > 5 ? '#ff3a3a' :
-              DATA.gap_score[i] > 3 ? '#ff7f40' :
-              DATA.gap_score[i] > 1.5 ? '#ffcc44' : '#44ddaa';
-  gapBars.innerHTML += `
-    <div class="gap-row">
-      <div class="gap-name">${b}</div>
-      <div class="gap-track">
-        <div class="gap-fill" data-pct="${pct}" style="background:${col}20;border-left:3px solid ${col}">
-          <span style="color:${col}">${DATA.gap_score[i] > 3 ? '⬆ HIGH GAP' : DATA.gap_score[i] > 1.5 ? '⬆ MOD GAP' : '✓ LOWER'}</span>
-        </div>
-      </div>
-      <div class="gap-score-val" style="color:${col}">+${DATA.gap_score[i]}</div>
-    </div>`;
-});
-
-// Waterfall chart
-const waterfallColors = DATA.gap_score.map(g =>
-  g > 5 ? '#ff3a3aaa' : g > 3 ? '#ff7f40aa' : g > 1.5 ? '#ffcc44aa' : '#44ddaaaa'
-);
-
-new Chart(document.getElementById('waterfallChart'), {
+new Chart(document.getElementById('barChart'), {
   type: 'bar',
   data: {
     labels: DATA.boroughs,
     datasets: [{
-      label: 'Resource Gap Score',
-      data: DATA.gap_score,
-      backgroundColor: waterfallColors,
-      borderColor: waterfallColors.map(c => c.replace('aa', 'ff')),
+      label: 'Total Shooting Incidents',
+      data: DATA.shootings,
+      backgroundColor: BOROUGH_COLORS.map(c=>c+'bb'),
+      borderColor: BOROUGH_COLORS,
       borderWidth: 2,
       borderRadius: 6,
     }]
@@ -1184,155 +763,261 @@ new Chart(document.getElementById('waterfallChart'), {
   options: {
     responsive: true,
     maintainAspectRatio: false,
-    animation: { duration: 2000, easing: 'easeOutBounce' },
+    animation: { duration: 1800, easing: 'easeOutQuart' },
     plugins: {
       legend: { display: false },
-      tooltip: { callbacks: { label: ctx => ` Gap Score: +${ctx.parsed.y}` } }
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.parsed.y.toLocaleString()} incidents`,
+          afterLabel: ctx => ` ${DATA.shootings_per_10k[ctx.dataIndex]} per 10k residents`
+        }
+      }
     },
     scales: {
-      x: { grid: { display: false }, ticks: { color: '#aaaacc', font: { weight: '600' } } },
+      x: { grid: { color:'#1a1a3a' }, ticks: { color:'#aaaacc', font:{ weight:'600' } } },
+      y: { grid: { color:'#1a1a3a' }, ticks: { color:'#7777aa', callback: v=>v.toLocaleString() } }
+    }
+  }
+});
+
+// ============================================================
+// PIE CHART — SLIDE 3
+// ============================================================
+new Chart(document.getElementById('pieChart'), {
+  type: 'doughnut',
+  data: {
+    labels: DATA.boroughs,
+    datasets: [{
+      data: DATA.shootings,
+      backgroundColor: BOROUGH_COLORS.map(c=>c+'bb'),
+      borderColor: BOROUGH_COLORS,
+      borderWidth: 2,
+      hoverOffset: 14,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { animateRotate:true, duration:1800, easing:'easeOutQuart' },
+    plugins: {
+      legend: { position:'bottom', labels: { color:'#aaaacc', padding:14, font:{size:11} } },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const pct = ((ctx.parsed/totalShootings)*100).toFixed(1);
+            return ` ${ctx.label}: ${ctx.parsed.toLocaleString()} (${pct}%)`;
+          }
+        }
+      }
+    },
+    cutout: '62%'
+  }
+});
+
+const pcts = DATA.shootings.map(s=>((s/totalShootings)*100).toFixed(1));
+const maxIdx = DATA.shootings.indexOf(Math.max(...DATA.shootings));
+document.getElementById('pieInsights').innerHTML = `
+  <div style="margin-bottom:1.2rem">
+    <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Highest raw count</div>
+    <div style="font-size:1.8rem;font-weight:900;color:${BOROUGH_COLORS[maxIdx]}">${DATA.boroughs[maxIdx]}</div>
+    <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.3rem">${pcts[maxIdx]}% of all NYC shootings</div>
+    <div style="font-size:0.7rem;color:#5555aa">Pop: ${(DATA.population_2024[maxIdx]/1000000).toFixed(2)}M — largest borough</div>
+  </div>
+  <div style="margin-bottom:1rem;padding:0.7rem;background:rgba(255,58,58,0.07);border-radius:6px;border-left:2px solid var(--red);font-size:0.72rem;color:var(--red2)">
+    ⚡ Bronx: highest <em>per capita</em> rate at ${DATA.shootings_per_10k[0]} per 10k — with only ${(DATA.population_2024[0]/1000000).toFixed(2)}M residents
+  </div>
+  ${DATA.boroughs.map((b,i)=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:0.75rem;font-weight:600">${b}</span>
+      <span style="font-size:0.75rem;color:${BOROUGH_COLORS[i]};font-weight:700">${pcts[i]}%</span>
+    </div>`).join('')}`;
+
+// ============================================================
+// GAP BARS — SLIDE 4
+// ============================================================
+const maxGap = Math.max(...DATA.gap_score);
+const gapBars = document.getElementById('gapBars');
+DATA.boroughs.forEach((b,i) => {
+  const pct = (DATA.gap_score[i]/maxGap)*100;
+  const col = DATA.gap_score[i]>5 ? '#ff3a3a' :
+              DATA.gap_score[i]>3 ? '#ff7f40' :
+              DATA.gap_score[i]>1.5 ? '#ffcc44' : '#44ddaa';
+  const label = DATA.gap_score[i]>5 ? '⬆ CRITICAL' :
+                DATA.gap_score[i]>3 ? '⬆ HIGH' :
+                DATA.gap_score[i]>1.5 ? '⬆ MODERATE' : '✓ LOWER';
+  gapBars.innerHTML += `
+    <div class="gap-row">
+      <div class="gap-name">${b}</div>
+      <div class="gap-track">
+        <div class="gap-fill" data-pct="${pct}" style="background:${col}18;border-left:3px solid ${col}">
+          <span style="color:${col}">${label}</span>
+        </div>
+      </div>
+      <div class="gap-score-val" style="color:${col}">+${DATA.gap_score[i]}</div>
+    </div>`;
+});
+
+// Waterfall
+new Chart(document.getElementById('waterfallChart'), {
+  type: 'bar',
+  data: {
+    labels: DATA.boroughs,
+    datasets: [{
+      label: 'Resource Gap Score',
+      data: DATA.gap_score,
+      backgroundColor: DATA.gap_score.map(g =>
+        g>5?'#ff3a3aaa':g>3?'#ff7f40aa':g>1.5?'#ffcc44aa':'#44ddaaaa'),
+      borderColor: DATA.gap_score.map(g =>
+        g>5?'#ff3a3a':g>3?'#ff7f40':g>1.5?'#ffcc44':'#44ddaa'),
+      borderWidth: 2,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration:2000, easing:'easeOutBounce' },
+    plugins: {
+      legend: { display:false },
+      tooltip: { callbacks: { label: ctx=>` Gap Score: +${ctx.parsed.y}` } }
+    },
+    scales: {
+      x: { grid:{display:false}, ticks:{color:'#aaaacc', font:{weight:'600'}} },
       y: {
-        grid: { color: '#1a1a3a' },
-        ticks: { color: '#7777aa' },
-        title: { display: true, text: 'Gap Score (higher = more underserved)', color: '#7777aa', font: { size: 11 } }
+        grid:{color:'#1a1a3a'},
+        ticks:{color:'#7777aa'},
+        title:{display:true,text:'Gap Score (higher = more underserved)',color:'#7777aa',font:{size:10}}
       }
     }
   }
 });
 
 // ============================================================
-// SLIDE 5 — LINE CHART
+// LINE CHART — SLIDE 5
 // ============================================================
-const lineDatasets = DATA.boroughs.map((b, i) => ({
-  label: b,
-  data: DATA.yearly_trends[b],
-  borderColor: BOROUGH_COLORS[i],
-  backgroundColor: BOROUGH_COLORS[i] + '22',
-  borderWidth: 2.5,
-  pointRadius: 4,
-  pointHoverRadius: 7,
-  fill: false,
-  tension: 0.3,
-}));
-
 new Chart(document.getElementById('lineChart'), {
   type: 'line',
-  data: { labels: DATA.years, datasets: lineDatasets },
+  data: {
+    labels: DATA.years,
+    datasets: DATA.boroughs.map((b,i)=>({
+      label: b,
+      data: DATA.yearly_trends[b],
+      borderColor: BOROUGH_COLORS[i],
+      backgroundColor: BOROUGH_COLORS[i]+'22',
+      borderWidth: 2.5,
+      pointRadius: 4,
+      pointHoverRadius: 7,
+      fill: false,
+      tension: 0.3,
+    }))
+  },
   options: {
     responsive: true,
     maintainAspectRatio: false,
-    animation: { duration: 2200, easing: 'easeInOutQuart' },
+    animation: { duration:2200, easing:'easeInOutQuart' },
     plugins: {
-      legend: {
-        position: 'bottom',
-        labels: { color: '#aaaacc', padding: 16, usePointStyle: true, font: { size: 12 } }
-      },
+      legend: { position:'bottom', labels:{color:'#aaaacc',padding:14,usePointStyle:true,font:{size:11}} },
       tooltip: {
-        mode: 'index',
-        intersect: false,
-        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} incidents` }
+        mode:'index',
+        intersect:false,
+        callbacks: { label: ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y} incidents` }
+      },
+      // Annotations for key events
+      annotation: {
+        annotations: {
+          baseline: {
+            type: 'box',
+            xMin: '2015', xMax: '2019',
+            backgroundColor: 'rgba(122,184,255,0.05)',
+            borderColor: 'rgba(122,184,255,0.2)',
+            borderWidth: 1,
+            label: { content:'Historic Baseline', display:true, color:'#7ab8ff', font:{size:9} }
+          }
+        }
       }
     },
     scales: {
-      x: { grid: { color: '#1a1a3a' }, ticks: { color: '#7777aa' } },
-      y: { grid: { color: '#1a1a3a' }, ticks: { color: '#7777aa', callback: v => v.toLocaleString() } }
+      x: { grid:{color:'#1a1a3a'}, ticks:{color:'#7777aa'} },
+      y: { grid:{color:'#1a1a3a'}, ticks:{color:'#7777aa', callback:v=>v.toLocaleString()} }
     },
-    interaction: { mode: 'nearest', axis: 'x', intersect: false }
+    interaction: { mode:'nearest', axis:'x', intersect:false }
   }
 });
 
 // ============================================================
-// SUMMARY TABLE
+// SUMMARY TABLE — SLIDE 5
 // ============================================================
 const tbody = document.getElementById('tableBody');
-DATA.boroughs.forEach((b, i) => {
+DATA.boroughs.forEach((b,i) => {
   const gap = DATA.gap_score[i];
-  const status = gap > 5 ? '<span class="pill pill-red">Critical</span>' :
-                 gap > 3 ? '<span class="pill pill-gold">High Need</span>' :
-                           '<span class="pill pill-blue">Moderate</span>';
+  const status = gap>5 ? '<span class="pill pill-red">Critical</span>' :
+                 gap>3 ? '<span class="pill pill-gold">High Need</span>' :
+                         '<span class="pill pill-blue">Moderate</span>';
   tbody.innerHTML += `
     <tr>
       <td style="font-weight:700;color:${BOROUGH_COLORS[i]}">${b}</td>
+      <td>${DATA.population_2024[i].toLocaleString()}</td>
       <td>${DATA.shootings[i].toLocaleString()}</td>
+      <td style="font-weight:700">${DATA.shootings_per_10k[i]}/10k</td>
       <td>${DATA.parks[i]}</td>
       <td>${DATA.youth_programs[i]}</td>
+      <td style="color:${gap>5?'#ff3a3a':gap>3?'#ff7f40':'#ffcc44'};font-weight:700">${DATA.dropout_rate[i]}</td>
       <td style="font-weight:800">+${gap}</td>
       <td>${status}</td>
     </tr>`;
 });
 
 // ============================================================
+// REFERENCE TABLE — SLIDE 6
+// ============================================================
+const refs = [
+  { slide:'Slides 1–3', stat:'NYPD Shooting Incident Data Historic', src:'NYC Open Data · data.cityofnewyork.us' },
+  { slide:'Slide 1', stat:'NYC total population 8,478,000 (2024)', src:'US Census Bureau Population Estimates Program Vintage 2024' },
+  { slide:'Slide 2', stat:'Brooklyn pop 2,679,620 · Bronx 1,297,660', src:'Metropolis Moving / US Census Bureau 2024' },
+  { slide:'Slide 2', stat:'Borough population rankings 1–5', src:'US Census Bureau Vintage 2024 · NYC Dept of City Planning' },
+  { slide:'Slide 3', stat:'60% of Brooklyn nonprofits lost government funding', src:'Brooklyn Org Nonprofit Survey, Fall 2025' },
+  { slide:'Slide 3', stat:'94% of Brooklyn orgs reported higher demand in 2025', src:'CBS New York, December 2025' },
+  { slide:'Slide 4', stat:'Bronx dropout rate 7.2% — highest in NYC', src:'NYC DOE Graduation Report, January 2025' },
+  { slide:'Slide 4', stat:'24.3% of Bronx residents lack high school diploma', src:'Newsweek, May 2024 · US Census / NYSED' },
+  { slide:'Slide 4', stat:'Brooklyn District 23 graduation rate 19% for ELLs', src:'CUNY Graduate Center Research, 2024' },
+  { slide:'Slide 4', stat:'90% of nonprofit contracts paid late in FY2024', src:'NYC Council Nonprofit Contract Report, April 2025' },
+  { slide:'Slide 4', stat:'Bronx nonprofits owed $365M in delayed payments', src:'Bronx Times, November 2024' },
+  { slide:'Slide 4', stat:'Kingsbridge Heights lost COMPASS-Explore grant', src:'Labor New York, November 2024' },
+  { slide:'Slide 4–5', stat:'Osborne Association lost ⅓ of federal funding', src:'Gothamist, December 2025' },
+  { slide:'Slide 4–5', stat:'LIFE Camp lost Monday street patrols after cuts', src:'Gothamist, December 2025' },
+  { slide:'Slide 5', stat:'Campaign Against Hunger (Brooklyn) lost $3.3M', src:'CBS New York, December 2025' },
+  { slide:'Slide 5', stat:'DYCD / MOCS budget cut 33% — approx $16M', src:'NYC Council Press Release, FY2025 Budget' },
+];
+
+const refGrid = document.getElementById('refGrid');
+refs.forEach(r => {
+  refGrid.innerHTML += `
+    <div class="ref-item">
+      <span class="ref-slide">${r.slide}</span>
+      <span class="ref-stat">${r.stat}</span>
+      <span class="ref-src">${r.src}</span>
+    </div>`;
+});
+
+// ============================================================
 // SCROLL ANIMATIONS
 // ============================================================
-const observer = new IntersectionObserver((entries) => {
+const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
-    if (e.isIntersecting) {
+    if(e.isIntersecting) {
       e.target.classList.add('visible');
-      // Trigger gap bar animations when slide 4 is visible
-      if (e.target.closest('#slide4')) {
-        setTimeout(() => {
-          document.querySelectorAll('.gap-fill').forEach(bar => {
+      if(e.target.closest('#slide4')) {
+        setTimeout(()=>{
+          document.querySelectorAll('.gap-fill').forEach(bar=>{
             bar.style.width = bar.dataset.pct + '%';
           });
-        }, 300);
+        }, 400);
       }
     }
   });
-}, { threshold: 0.15 });
+}, { threshold: 0.12 });
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-// ============================================================
-// SPEAKER NOTES FUNCTIONALITY
-// ============================================================
-let notesVisible = false;
-
-function toggleSpeakerNotes() {
-  const panel = document.getElementById('speakerNotesPanel');
-  notesVisible = !notesVisible;
-  panel.classList.toggle('visible');
-  updateSpeakerNotes();
-}
-
-function updateSpeakerNotes() {
-  const notesPanel = document.getElementById('speakerNotesPanel');
-  const notesText = document.getElementById('speakerNotesText');
-  
-  if (!notesVisible) return;
-
-  // Detect which slide is currently in view
-  let currentSlide = 'slide1';
-  const slides = ['slide1', 'slide2', 'slide3', 'slide4', 'slide5', 'slide6'];
-  
-  slides.forEach((slideId, index) => {
-    const slide = document.getElementById(slideId);
-    if (slide) {
-      const rect = slide.getBoundingClientRect();
-      if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
-        currentSlide = slideId;
-      }
-    }
-  });
-
-  // Update notes text
-  const notes = SPEAKER_NOTES[currentSlide];
-  if (notes) {
-    notesText.innerHTML = notes.split('\n').map(line => {
-      if (line.includes('[pause]')) {
-        return `<em style="color: var(--blue2); font-weight: 600;">${line.trim()}</em>`;
-      }
-      return line;
-    }).join('<br>');
-  }
-}
-
-// Update speaker notes on scroll
-window.addEventListener('scroll', updateSpeakerNotes);
-
-// Update speaker notes on page load
-document.addEventListener('DOMContentLoaded', () => {
-  updateSpeakerNotes();
-});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
 </script>
 </body>
 </html>
